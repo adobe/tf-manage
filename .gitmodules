@@ -1,0 +1,3 @@
+[submodule "vendor/bash-framework"]
+	path = vendor/bash-framework
+	url = git@git.corp.adobe.com:aemm-sre-tools/bash-framework.git
