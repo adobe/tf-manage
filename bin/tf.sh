@@ -3,18 +3,19 @@
 ### Framework boilerplate
 ###############################################################################
 # calculate script root dir
-ROOT_DIR="$( dirname $(realpath ${BASH_SOURCE[@]}) )"
-
-echo $ROOT_DIR
+ROOT_DIR="$( dirname $(realpath ${BASH_SOURCE[0]}) )"
 
 # import bash framework
 source "${ROOT_DIR}/../vendor/bash-framework/lib/import.sh"
+
+# import TF wrapper modules
+source "${ROOT_DIR}/../lib/import.sh"
 
 ### Input validation
 ###############################################################################
 function usage {
     cmd="${BASH_SOURCE[0]##*/} <module> <env> <action>"
-    echo "Usage: ${cmd}"
+    error "Usage: ${cmd}"
     exit -1
 }
 
@@ -37,5 +38,3 @@ _TF_ACTION=${3}
 
 ### Build terraform command
 ###############################################################################
-echo "terraform"
-echo "$OK"
