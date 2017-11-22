@@ -19,20 +19,26 @@ err_part2=$(decorate_error <<'HEREDOC'
     Then, re-run the script after you\'re done
 HEREDOC)
 
-    echo -ne "${err_part1}\n${generate_snippet}\n${err_part2}"
+    echo -ne "\n${err_part1}\n${generate_snippet}\n${err_part2}"
 }
 
-## get terraform module git repository top-level path
-## Note: the assumption is that you're running the terraform wrapper from
-##       within a git infrastructure repository
-TLDIR=$(git rev-parse --show-toplevel)
+__load_config() {
+    ## get terraform module git repository top-level path
+    ## Note: the assumption is that you're running the terraform wrapper from
+    ##       within a git infrastructure repository
+    TLDIR=$(git rev-parse --show-toplevel)
 
-## the default tf-manage configuration path
-__tfm_conf_path="${TLDIR}/.tfm.conf"
+    ## the default tf-manage configuration path
+    __tfm_conf_path="${TLDIR}/.tfm.conf"
 
-## Check config file exists
-_cmd="test -f ${__tfm_conf_path}"
-run_strict_validation "${_cmd}" "Checking tf-manage config exists..." "${cmd_flags[@]}" "$(__config_not_found_err)"
+    ## Check config file exists
+    _cmd="test -f ${__tfm_conf_path}"
+    run_cmd_silent "${_cmd}" "Checking tf-manage config exists..." "$(__config_not_found_err)"
+    result=$?
 
-## import the project-specific configuration
-source ${__tfm_conf_path}
+    ## import the project-specific configuration
+    [ $result -eq 0 ] && source ${__tfm_conf_path}
+
+    # pass command exit-code to caller
+    return ${result}
+}
