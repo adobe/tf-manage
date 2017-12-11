@@ -86,12 +86,10 @@ _tf_manage_complete() {
     [ "${result}" -eq 1 ] && return 1
 
     # build project paths
-    TLDIR=$(git rev-parse --show-toplevel)
-    CONFIG_PATH="${TLDIR}/${__tfm_env_rel_path}"
-    MODULE_PATH="${TLDIR}/${__tfm_module_rel_path}"
+    CONFIG_PATH="${__tfm_project_dir}/${__tfm_env_rel_path}"
+    MODULE_PATH="${__tfm_project_dir}/${__tfm_module_rel_path}"
 
-    # echo "${CONFIG_PATH}"
-
+    # initialize bash completion variables
     local cur_word prev_word type_list
 
     # COMP_WORDS is an array of words in the current command line.
@@ -101,7 +99,6 @@ _tf_manage_complete() {
     # use it yet.
     cur_word="${COMP_WORDS[$COMP_CWORD]}"
     prev_word="${COMP_WORDS[$COMP_CWORD-1]}"
-
 
     if [ $COMP_CWORD -eq 1 ]; then
         COMPREPLY=( $(compgen -W "$(_tfm_suggest_arg_1)" -- $cur_word) )
@@ -116,6 +113,4 @@ _tf_manage_complete() {
 }
 
 # Register _tf_manage_complete to provide completion for the following commands
-
-export -f _tfm_suggest_arg_1
 complete -F _tf_manage_complete tf

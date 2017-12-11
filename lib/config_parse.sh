@@ -26,10 +26,10 @@ __load_config() {
     ## get terraform module git repository top-level path
     ## Note: the assumption is that you're running the terraform wrapper from
     ##       within a git infrastructure repository
-    TLDIR=$(git rev-parse --show-toplevel)
+    export __tfm_project_dir="$(git rev-parse --show-toplevel)"
 
     ## the default tf-manage configuration path
-    __tfm_conf_path="${TLDIR}/.tfm.conf"
+    __tfm_conf_path="${__tfm_project_dir}/.tfm.conf"
 
     ## Check config file exists
     _cmd="test -f ${__tfm_conf_path}"
