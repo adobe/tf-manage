@@ -85,10 +85,6 @@ _tf_manage_complete() {
     # if we have a config error, do not continue to build suggestions
     [ "${result}" -eq 1 ] && return 1
 
-    # build project paths
-    CONFIG_PATH="${__tfm_project_dir}/${__tfm_env_rel_path}"
-    MODULE_PATH="${__tfm_project_dir}/${__tfm_module_rel_path}"
-
     # initialize bash completion variables
     local cur_word prev_word type_list
 

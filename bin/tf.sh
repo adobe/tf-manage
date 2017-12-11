@@ -33,12 +33,12 @@ __load_config
 
 ### Check folder structure is valid
 ###############################################################################
-# validate_module_dir
-# validate_env_dir
+__validate_module_dir
+__validate_env_dir
 
 ### Check TF_ACTION is supported
 ###############################################################################
-# validate_tf_action
+__validate_tf_action
 
 ### Build terraform command
 ###############################################################################
