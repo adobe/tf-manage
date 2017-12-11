@@ -63,11 +63,10 @@ _tfm_suggest_arg_2() {
     return $?
 }
 
-# _tfm_suggest_arg_3()
-# {
-#     # return suggestions from config folder
-#     find "${TLDIR}/${CONFIG_PREFIX}" -d 2 -name 'output.json' | sed "s,^${TLDIR}/${CONFIG_PREFIX}/,,g"
-# }
+_tfm_suggest_arg_3()
+{
+    echo "plan apply"
+}
 
 _tf_manage_complete() {
     # helper bootstrap
@@ -108,8 +107,8 @@ _tf_manage_complete() {
         COMPREPLY=( $(compgen -W "$(_tfm_suggest_arg_1)" -- $cur_word) )
     elif [ $COMP_CWORD -eq 2 ]; then
         COMPREPLY=( $(compgen -W "$(_tfm_suggest_arg_2)" -- $cur_word) )
-    # elif [ $COMP_CWORD -eq 3 ]; then
-    #     COMPREPLY=( $(compgen -W "$(_tfm_suggest_arg_3)" -- $cur_word) )
+    elif [ $COMP_CWORD -eq 3 ]; then
+        COMPREPLY=( $(compgen -W "$(_tfm_suggest_arg_3)" -- $cur_word) )
     else
         COMPREPLY=()
     fi
