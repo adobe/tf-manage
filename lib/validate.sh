@@ -96,6 +96,15 @@ __validate_tf_action() {
     run_cmd_silent_strict "${_cmd}" "Validating supplied action" "$(echo -e "Action ${action_emph} is invalid\nValid options include: ${valid_actions[@]}" | decorate_error)"
 }
 
+__validate_component() {
+    local component="${_COMPONENT}"
+    local component_emph="$(__add_emphasis_blue "${component}")"
+
+    ## Check component is set
+    _cmd="! test -z ${component}"
+    run_cmd_silent_strict "${_cmd}" "Checking component is not empty" "$(echo -e "Component is empty.\nMake sure the first argument is set to a non-null string" | decorate_error)"
+}
+
 __validate_product() {
     local valid_products="${__tfm_allowed_products}"
     local product="${__tfm_project_name}"
@@ -115,5 +124,13 @@ __validate_product() {
 }
 
 __validate_tf_workspace() {
-    local expected_workspace="${_PRODUCT}-${_MODULE}-${_ENV}-${_VARS//}"
+    local product="${__tfm_project_name}"
+    ## Build expected workspace
+    local expected_workspace="${product}-${_COMPONENT}-${_MODULE}-${_ENV}-${_VARS/\.tfvars/}"
+    echo "${expected_workspace}"
+
+    # ## Check workspace exists
+    # _tf_command="terraform workspace list"
+    # run_cmd "${_tf_command}" "Checking terraform workspace ${tf_workspace_emph} exists"
+    # echo "${_tf_command}"
 }

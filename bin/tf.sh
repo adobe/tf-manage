@@ -14,19 +14,20 @@ source "${ROOT_DIR}/../lib/import.sh"
 ### Input validation
 ###############################################################################
 function usage {
-    cmd="${BASH_SOURCE[0]##*/} <module> <env> <vars> <action>"
+    cmd="${BASH_SOURCE[0]##*/} <component> <module> <env> <vars> <action>"
     error "Usage: ${cmd}"
     exit -1
 }
 
 # number of arguments
-[ "$#" -ne 4 ] && usage
+[ "$#" -ne 5 ] && usage
 
 # gather input vars
-_MODULE=${1}
-_ENV=${2}
-_VARS=${3}
-_TF_ACTION=${4}
+_COMPONENT=${1}
+_MODULE=${2}
+_ENV=${3}
+_VARS=${4}
+_TF_ACTION=${5}
 
 ### Load configuration
 ###############################################################################
@@ -35,6 +36,7 @@ __load_project_config
 
 ### Check folder structure is valid
 ###############################################################################
+__validate_component
 __validate_product
 __validate_module_dir
 __validate_env_dir
@@ -44,19 +46,13 @@ __validate_config_path
 ###############################################################################
 __validate_tf_action
 
-### Check terraform workspace exists and is active
-###############################################################################
-__validate_tf_workspace
-
 ### Switch to targeted module path
 ###############################################################################
 cd "${TF_MODULE_PATH}"
 
-### Build terraform workspace (env) command
+### Check terraform workspace exists and is active
 ###############################################################################
-_tf_command="terraform workspace list"
-run_cmd "${_tf_command}" "Checking terraform workspace ${tf_workspace_emph} exists"
-echo "${_tf_command}"
+__validate_tf_workspace
 
 ### Build terraform action command
 ###############################################################################
