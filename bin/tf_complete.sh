@@ -5,7 +5,7 @@ __search_path_not_found() {
 HEREDOC)
 
 generate_snippet=$(cat <<-HEREDOC
-mkdir ${1}
+mkdir -p ${1}
 HEREDOC)
 err_part2=$(decorate_error <<'HEREDOC'
     Then, try auto-complete again
@@ -17,7 +17,7 @@ HEREDOC)
 
 __search_path_is_empty() {
     err_part1=$(decorate_error <<-HEREDOC
-    Search path ${1} is empty
+    Search pattern ${1}/${2} is empty
     You must create entries first
 HEREDOC)
 
@@ -28,6 +28,7 @@ HEREDOC)
 __suggest_from_path() {
     __safe_set_bash_setting 'u'
     local search_path=${1}
+    local search_filter=${2:-}
     __safe_unset_bash_setting 'u'
 
     # test search path exists
@@ -39,11 +40,11 @@ __suggest_from_path() {
     [ "${result}" -eq 1 ] && return 1
 
     # find and store suggestions
-    contents="$(ls -A ${search_path})"
+    contents="$(ls -A ${search_path} | grep "${search_filter}")"
 
     # test search path not empty folder
     _cmd="test -n \"${contents}\""
-    run_cmd_silent "${_cmd}" "" "$(__search_path_is_empty ${search_path})"
+    run_cmd_silent "${_cmd}" "" "$(__search_path_is_empty ${search_path} ${search_filter})"
     result=$?
 
     # if the folder is empty, there are no suggestions to give
@@ -53,19 +54,33 @@ __suggest_from_path() {
     echo "${contents}"
 }
 
-_tfm_suggest_arg_1() {
-    __suggest_from_path "${MODULE_PATH}"
+_tfm_suggest_module() {
+    __suggest_from_path "${TF_MODULE_PATH}"
     return $?
 }
 
-_tfm_suggest_arg_2() {
-    __suggest_from_path "${CONFIG_PATH}"
+_tfm_suggest_env() {
+    __suggest_from_path "${TF_CONFIG_PATH}"
     return $?
 }
 
-_tfm_suggest_arg_3()
+_tfm_suggest_config() {
+    # input vars
+    __safe_set_bash_setting 'u'
+    local selected_env="${1}"
+    local selected_module="${2}"
+    local search_filter="${3:-.*\.tfvars}"
+    __safe_unset_bash_setting 'u'
+
+    # find config files
+    __suggest_from_path "${TF_CONFIG_PATH}/${selected_env}/${selected_module}" "${search_filter}"
+    return $?
+}
+
+_tfm_suggest_action()
 {
-    echo "plan apply"
+    echo "${__tfm_allowed_actions[@]}"
+    return $?
 }
 
 _tf_manage_complete() {
@@ -78,12 +93,19 @@ _tf_manage_complete() {
     # import TF wrapper modules
     source "${TOOL_TLDIR}/lib/import.sh"
 
-    # try loading the config
-    __load_config
+    # try loading the global config
+    __load_global_config
     result=$?
 
     # if we have a config error, do not continue to build suggestions
-    [ "${result}" -eq 1 ] && return 1
+    [ "${result}" -ne 0 ] && return 1
+
+    # try loading the project config
+    __load_project_config
+    result=$?
+
+    # if we have a config error, do not continue to build suggestions
+    [ "${result}" -ne 0 ] && return 1
 
     # initialize bash completion variables
     local cur_word prev_word type_list
@@ -97,11 +119,14 @@ _tf_manage_complete() {
     prev_word="${COMP_WORDS[$COMP_CWORD-1]}"
 
     if [ $COMP_CWORD -eq 1 ]; then
-        COMPREPLY=( $(compgen -W "$(_tfm_suggest_arg_1)" -- $cur_word) )
+        COMPREPLY=( $(compgen -W "$(_tfm_suggest_module)" -- $cur_word) )
     elif [ $COMP_CWORD -eq 2 ]; then
-        COMPREPLY=( $(compgen -W "$(_tfm_suggest_arg_2)" -- $cur_word) )
+        COMPREPLY=( $(compgen -W "$(_tfm_suggest_env)" -- $cur_word) )
     elif [ $COMP_CWORD -eq 3 ]; then
-        COMPREPLY=( $(compgen -W "$(_tfm_suggest_arg_3)" -- $cur_word) )
+        prev2_word="${COMP_WORDS[$COMP_CWORD-2]}"
+        COMPREPLY=( $(compgen -W "$(_tfm_suggest_config ${prev_word} ${prev2_word})" -- $cur_word) )
+    elif [ $COMP_CWORD -eq 4 ]; then
+        COMPREPLY=( $(compgen -W "$(_tfm_suggest_action)" -- $cur_word) )
     else
         COMPREPLY=()
     fi
