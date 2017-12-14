@@ -14,7 +14,7 @@ generate_snippet=$(cat <<-HEREDOC
     mkdir -p ${__tfm_project_dir}/${!tfm_dir_variable}
 HEREDOC)
 
-    echo -ne "\n${err_part1}\n${generate_snippet}"
+    echo -ne "${err_part1}\n${generate_snippet}"
 }
 
 __validate_module_dir() {
