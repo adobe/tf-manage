@@ -1,6 +1,15 @@
 # tf-manage
 
 ## Changelog
+### 1.0.0
+- first functional wrapper with support for plan, apply and destroy
+- upgrade to bash-framework v0.4.3
+- terraform workspaces are automatically created/selected
+- [added] product/component/workspace validation
+- [added] controller for wrapping terraform commands
+- [added] encouraging error message for failed terraform commands
+
+## Changelog
 ### 0.2.0
 - upgrade to bash-framework v0.3.0
 - [added] strict check that we're in a git repository (hopefully a terraform module one)
