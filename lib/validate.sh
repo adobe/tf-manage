@@ -127,32 +127,31 @@ __validate_tf_workspace() {
     ## Build expected workspace
     local workspace="${__tfm_project_name}-${_COMPONENT}-${_MODULE}-${_ENV}-${_VARS/\.tfvars/}"
     local workspace_emph="$(__add_emphasis_blue "${workspace}")"
-
-    ## prepare flags for run_cmd
-    cmd_flags=(
-        "no_strict"
-        "no_print_cmd"
-        "no_decorate_output"
-        "no_print_output"
-        "no_print_message"
-        "no_print_status"
-        "no_print_outcome"
-        "aborting..."
-        "continuing..."
-    )
-
-    local message="Checking workspace ${workspace_emph} exists"
+    local workspace_emph_red="$(__add_emphasis_red "${workspace}")"
 
     ## Check workspace exists
-    _cmd="terraform workspace list | grep ${workspace}"
-    run_cmd "${_cmd}" "${message}" "${cmd_flags[@]}"
+    local _cmd="terraform workspace list | grep ${workspace}"
+    local _message="Checking workspace ${workspace_emph} exists"
+    local _flags=(${_DEFAULT_CMD_FLAGS[@]})
+    _flags[3]="no_print_output"
+    _flags[4]="no_print_message"
+    _flags[5]="print_status"
+    _flags[6]="no_print_outcome"
+    run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
     result=$?
 
     ## Auto-creating missing workspace, if needed
     ## NOTE: Changing to the module directory is needed for local workspace support
     if [ "${result}" -ne 0 ]; then
-        _cmd="cd ${TF_MODULE_PATH}/${_MODULE} && terraform workspace new ${workspace} && cd -"
-        run_cmd_strict "${_cmd}" "Creating workspace ${workspace_emph}" "Could not create workspace!"
+        local _cmd="cd ${TF_MODULE_PATH}/${_MODULE} && terraform workspace new ${workspace} && cd -"
+        local _message="Creating workspace ${workspace_emph_red}"
+        local _flags=(${_DEFAULT_CMD_FLAGS[@]})
+        _flags[0]="strict"
+        _flags[1]="print_cmd"
+        _flags[4]="print_message"
+        _flags[5]="print_status"
+        _flags[6]="no_print_outcome"
+        run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "Could not create workspace!"
     fi
 
     ## Selecting workspace

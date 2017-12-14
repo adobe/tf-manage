@@ -26,8 +26,14 @@ __run_action_apply() {
     # build wrapper command
     local _cmd="terraform ${_TF_ACTION}"
     local _message="Executing $(__add_emphasis_red "terraform apply")"
+    local _extra_notice="This $(__add_emphasis_red 'will') affect infrastructure resources."
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
     _flags[0]='strict'
+    _flags[4]="no_print_message"
+
+    # execute
+    info "${_message}"
+    info "${_extra_notice}"
 
     # execute
     run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
@@ -39,6 +45,25 @@ __run_action_destroy() {
     # build wrapper command
     local _cmd="terraform ${_TF_ACTION}"
     local _message="Executing $(__add_emphasis_red "terraform destroy")"
+    local _extra_notice="This $(__add_emphasis_red will 'DESTROY') infrastructure resources."
+    local _flags=(${_DEFAULT_CMD_FLAGS[@]})
+    _flags[0]='strict'
+    _flags[4]="no_print_message"
+
+    # execute
+    info "${_message}"
+    info "${_extra_notice}"
+
+    # execute
+    run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
+}
+
+__run_action_get() {
+    debug "Entered ${FUNCNAME}"
+
+    # build wrapper command
+    local _cmd="terraform ${_TF_ACTION}"
+    local _message="Executing $(__add_emphasis_green "terraform get")"
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
     _flags[0]='strict'
 
