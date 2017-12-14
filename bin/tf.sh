@@ -36,8 +36,8 @@ __load_project_config
 
 ### Check folder structure is valid
 ###############################################################################
-__validate_component
 __validate_product
+__validate_component
 __validate_module_dir
 __validate_env_dir
 __validate_config_path
@@ -48,7 +48,7 @@ __validate_tf_action
 
 ### Switch to targeted module path
 ###############################################################################
-cd "${TF_MODULE_PATH}"
+cd "${TF_MODULE_PATH}/${_MODULE}"
 
 ### Check terraform workspace exists and is active
 ###############################################################################
@@ -56,5 +56,4 @@ __validate_tf_workspace
 
 ### Build terraform action command
 ###############################################################################
-_tf_command="terraform ${_TF_ACTION} -var-file=\"${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/terraform.tfvars\""
-echo "${_tf_command}"
+__tf_controller

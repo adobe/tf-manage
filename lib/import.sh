@@ -6,3 +6,4 @@ export __tfm_conf_dir="${__tfm_root_dir}/etc"
 # import TF wrapper modules
 source "${__tfm_lib_dir}/config_parse.sh"
 source "${__tfm_lib_dir}/validate.sh"
+source "${__tfm_lib_dir}/tf_wrapper.sh"

@@ -102,7 +102,7 @@ __validate_component() {
 
     ## Check component is set
     _cmd="! test -z ${component}"
-    run_cmd_silent_strict "${_cmd}" "Checking component is not empty" "$(echo -e "Component is empty.\nMake sure the first argument is set to a non-null string" | decorate_error)"
+    run_cmd_strict "${_cmd}" "Checking component ${component_emph} is valid" "$(echo -e "Component is empty.\nMake sure the first argument is set to a non-null string" | decorate_error)"
 }
 
 __validate_product() {
@@ -124,13 +124,39 @@ __validate_product() {
 }
 
 __validate_tf_workspace() {
-    local product="${__tfm_project_name}"
     ## Build expected workspace
-    local expected_workspace="${product}-${_COMPONENT}-${_MODULE}-${_ENV}-${_VARS/\.tfvars/}"
-    echo "${expected_workspace}"
+    local workspace="${__tfm_project_name}-${_COMPONENT}-${_MODULE}-${_ENV}-${_VARS/\.tfvars/}"
+    local workspace_emph="$(__add_emphasis_blue "${workspace}")"
 
-    # ## Check workspace exists
-    # _tf_command="terraform workspace list"
-    # run_cmd "${_tf_command}" "Checking terraform workspace ${tf_workspace_emph} exists"
-    # echo "${_tf_command}"
+    ## prepare flags for run_cmd
+    cmd_flags=(
+        "no_strict"
+        "no_print_cmd"
+        "no_decorate_output"
+        "no_print_output"
+        "no_print_message"
+        "no_print_status"
+        "no_print_outcome"
+        "aborting..."
+        "continuing..."
+    )
+
+    local message="Checking workspace ${workspace_emph} exists"
+
+    ## Check workspace exists
+    _cmd="terraform workspace list | grep ${workspace}"
+    run_cmd "${_cmd}" "${message}" "${cmd_flags[@]}"
+    result=$?
+
+    ## Auto-creating missing workspace, if needed
+    ## NOTE: Changing to the module directory is needed for local workspace support
+    if [ "${result}" -ne 0 ]; then
+        _cmd="cd ${TF_MODULE_PATH}/${_MODULE} && terraform workspace new ${workspace} && cd -"
+        run_cmd_strict "${_cmd}" "Creating workspace ${workspace_emph}" "Could not create workspace!"
+    fi
+
+    ## Selecting workspace
+    ## NOTE: Changing to the module directory is needed for local workspace support
+    _cmd="cd ${TF_MODULE_PATH}/${_MODULE} && terraform workspace select ${workspace} && cd -"
+    run_cmd_strict "${_cmd}" "Selecting workspace ${workspace_emph}" "Could not select workspace!"
 }
