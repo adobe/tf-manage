@@ -124,10 +124,22 @@ __validate_product() {
 }
 
 __validate_tf_workspace() {
-    ## Build expected workspace
+    ## Auto-generate workspace name
     local workspace="${__tfm_project_name}-${_COMPONENT}-${_MODULE}-${_ENV}-${_VARS/\.tfvars/}"
+    local workspace_override='false'
+
+    ## Check for workspace override
+    if [ ! -z "${_WORKSPACE_OVERRIDE/workspace=/}" ]; then
+        workspace="${_WORKSPACE_OVERRIDE#workspace=*}"
+        workspace_override='true'
+    fi
+
+    ## Add emphasis to workspace name
     local workspace_emph="$(__add_emphasis_blue "${workspace}")"
     local workspace_emph_red="$(__add_emphasis_red "${workspace}")"
+
+    ## Send notice for workspace override
+    [ "${workspace_override}" = 'true' ] && info "Using workspace override ${workspace_emph_red}"
 
     ## Check workspace exists
     local _cmd="terraform workspace list | grep ${workspace}"
@@ -143,6 +155,7 @@ __validate_tf_workspace() {
     ## Auto-creating missing workspace, if needed
     ## NOTE: Changing to the module directory is needed for local workspace support
     if [ "${result}" -ne 0 ]; then
+        # prepare command and notice
         local _cmd="cd ${TF_MODULE_PATH}/${_MODULE} && terraform workspace new ${workspace} && cd -"
         local _message="Creating workspace ${workspace_emph_red}"
         local _flags=(${_DEFAULT_CMD_FLAGS[@]})
@@ -151,6 +164,12 @@ __validate_tf_workspace() {
         _flags[4]="print_message"
         _flags[5]="print_status"
         _flags[6]="no_print_outcome"
+
+        # prompt user first
+        _input_question="About to create workspace ${workspace_emph_red}"
+        get_user_input "${_input_question}"
+
+        # execute command
         run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "Could not create workspace!"
     fi
 

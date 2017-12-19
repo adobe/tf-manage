@@ -89,6 +89,12 @@ _tfm_suggest_action()
     return $?
 }
 
+_tfm_suggest_workspace_override()
+{
+    echo "workspace=default"
+    return $?
+}
+
 _tf_manage_complete() {
     # helper bootstrap
     TOOL_TLDIR=$(cd $(dirname $(readlink $(which tf))) && git rev-parse --show-toplevel && cd - > /dev/null)
@@ -135,6 +141,8 @@ _tf_manage_complete() {
         COMPREPLY=( $(compgen -W "$(_tfm_suggest_config ${prev_word} ${prev2_word})" -- $cur_word) )
     elif [ $COMP_CWORD -eq 5 ]; then
         COMPREPLY=( $(compgen -W "$(_tfm_suggest_action)" -- $cur_word) )
+    elif [ $COMP_CWORD -eq 6 ]; then
+        COMPREPLY=( $(compgen -W "$(_tfm_suggest_workspace_override)" -- $cur_word) )
     else
         COMPREPLY=()
     fi

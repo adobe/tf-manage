@@ -14,13 +14,13 @@ source "${ROOT_DIR}/../lib/import.sh"
 ### Input validation
 ###############################################################################
 function usage {
-    cmd="${BASH_SOURCE[0]##*/} <component> <module> <env> <vars> <action>"
+    cmd="${BASH_SOURCE[0]##*/} <component> <module> <env> <vars> <action> [workspace]"
     error "Usage: ${cmd}"
     exit -1
 }
 
 # number of arguments
-[ "$#" -ne 5 ] && usage
+( [ "$#" -lt 5 ] || [ "$#" -gt 6 ] ) && usage
 
 # gather input vars
 _COMPONENT=${1}
@@ -28,6 +28,7 @@ _MODULE=${2}
 _ENV=${3}
 _VARS=${4}
 _TF_ACTION=${5}
+_WORKSPACE_OVERRIDE=${6:-workspace=}
 
 ### Load configuration
 ###############################################################################

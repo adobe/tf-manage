@@ -7,9 +7,10 @@ __run_action_plan() {
 
     # vars
     local var_file_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}"
+    local plan_file_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/.tfplan"
 
     # build wrapper command
-    local _cmd="terraform ${_TF_ACTION} -var-file='${var_file_path}'"
+    local _cmd="terraform ${_TF_ACTION} -var-file='${var_file_path}' -out ${plan_file_path}"
     local _message="Executing $(__add_emphasis_magenta "terraform plan")"
     local _extra_notice="This $(__add_emphasis_green 'will not') affect infrastructure resources."
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
@@ -23,8 +24,11 @@ __run_action_plan() {
 }
 
 __run_action_apply() {
+    # vars
+    local plan_file_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/.tfplan"
+
     # build wrapper command
-    local _cmd="terraform ${_TF_ACTION}"
+    local _cmd="terraform ${_TF_ACTION} ${plan_file_path}"
     local _message="Executing $(__add_emphasis_red "terraform apply")"
     local _extra_notice="This $(__add_emphasis_red 'will') affect infrastructure resources."
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
