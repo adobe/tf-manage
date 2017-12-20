@@ -57,6 +57,7 @@ __run_action_destroy() {
     local _extra_notice="This $(__add_emphasis_red 'will DESTROY') infrastructure resources."
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
     _flags[0]='strict'
+    _flags[1]='print_cmd'
     _flags[4]="no_print_message"
 
     # execute
