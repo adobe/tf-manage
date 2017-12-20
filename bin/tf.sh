@@ -49,7 +49,6 @@ __validate_tf_action
 
 ### Switch to targeted module path
 ###############################################################################
-info "Running from ${TF_MODULE_PATH}/${_MODULE}"
 cd "${TF_MODULE_PATH}/${_MODULE}"
 
 ### Check terraform workspace exists and is active

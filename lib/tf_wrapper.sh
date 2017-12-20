@@ -15,6 +15,7 @@ __run_action_plan() {
     local _extra_notice="This $(__add_emphasis_green 'will not') affect infrastructure resources."
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
     _flags[0]='strict'
+    _flags[1]='print_cmd'
     _flags[4]="no_print_message"
 
     # execute
@@ -47,10 +48,13 @@ __run_action_apply() {
 __run_action_destroy() {
     debug "Entered ${FUNCNAME}"
 
+    # vars
+    local var_file_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}"
+
     # build wrapper command
-    local _cmd="terraform ${_TF_ACTION}"
+    local _cmd="terraform ${_TF_ACTION} -var-file='${var_file_path}'"
     local _message="Executing $(__add_emphasis_red "terraform destroy")"
-    local _extra_notice="This $(__add_emphasis_red will 'DESTROY') infrastructure resources."
+    local _extra_notice="This $(__add_emphasis_red 'will DESTROY') infrastructure resources."
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
     _flags[0]='strict'
     _flags[4]="no_print_message"
@@ -128,6 +132,8 @@ __tf_controller() {
 
     # build targeted wrapper command function name
     local wrapper_action_method="__run_action_${_TF_ACTION}"
+
+    info "Running from ${PWD}"
 
     # execute function
     $wrapper_action_method
