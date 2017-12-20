@@ -33,6 +33,7 @@ __run_action_apply() {
     local _extra_notice="This $(__add_emphasis_red 'will') affect infrastructure resources."
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
     _flags[0]='strict'
+    _flags[1]='print_cmd'
     _flags[4]="no_print_message"
 
     # execute
@@ -68,6 +69,35 @@ __run_action_get() {
     # build wrapper command
     local _cmd="terraform ${_TF_ACTION}"
     local _message="Executing $(__add_emphasis_green "terraform get")"
+    local _flags=(${_DEFAULT_CMD_FLAGS[@]})
+    _flags[0]='strict'
+
+    # execute
+    run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
+}
+
+__run_action_output() {
+    debug "Entered ${FUNCNAME}"
+
+    # build wrapper command
+    local _cmd="terraform ${_TF_ACTION}"
+    local _message="Executing $(__add_emphasis_green "terraform output")"
+    local _flags=(${_DEFAULT_CMD_FLAGS[@]})
+    _flags[0]='strict'
+
+    # execute
+    run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
+}
+
+__run_action_refresh() {
+    debug "Entered ${FUNCNAME}"
+
+    # vars
+    local var_file_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}"
+
+    # build wrapper command
+    local _cmd="terraform ${_TF_ACTION} -var-file='${var_file_path}'"
+    local _message="Executing $(__add_emphasis_green "terraform refresh")"
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
     _flags[0]='strict'
 
