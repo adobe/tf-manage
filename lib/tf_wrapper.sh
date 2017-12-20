@@ -94,6 +94,19 @@ __run_action_output() {
     run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
 }
 
+__run_action_init() {
+    debug "Entered ${FUNCNAME}"
+
+    # build wrapper command
+    local _cmd="terraform ${_TF_ACTION}"
+    local _message="Executing $(__add_emphasis_green "terraform init")"
+    local _flags=(${_DEFAULT_CMD_FLAGS[@]})
+    _flags[0]='strict'
+
+    # execute
+    run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
+}
+
 __run_action_refresh() {
     debug "Entered ${FUNCNAME}"
 
