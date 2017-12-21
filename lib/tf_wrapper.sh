@@ -7,7 +7,7 @@ __run_action_plan() {
 
     # vars
     local var_file_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}"
-    local plan_file_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/.tfplan"
+    local plan_file_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}.tfplan"
 
     # build wrapper command
     local _cmd="terraform ${_TF_ACTION} -var-file='${var_file_path}' -out ${plan_file_path}"
@@ -26,10 +26,31 @@ __run_action_plan() {
 
 __run_action_apply() {
     # vars
-    local plan_file_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/.tfplan"
+    local plan_file_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}.tfplan"
 
     # build wrapper command
     local _cmd="terraform ${_TF_ACTION} ${plan_file_path}"
+    local _message="Executing $(__add_emphasis_red "terraform apply")"
+    local _extra_notice="This $(__add_emphasis_red 'will') affect infrastructure resources."
+    local _flags=(${_DEFAULT_CMD_FLAGS[@]})
+    _flags[0]='strict'
+    _flags[1]='print_cmd'
+    _flags[4]="no_print_message"
+
+    # execute
+    info "${_message}"
+    info "${_extra_notice}"
+
+    # execute
+    run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
+}
+
+__run_action_plan_and_apply() {
+    # vars
+    local var_file_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}"
+
+    # build wrapper command
+    local _cmd="terraform apply -var-file='${var_file_path}'"
     local _message="Executing $(__add_emphasis_red "terraform apply")"
     local _extra_notice="This $(__add_emphasis_red 'will') affect infrastructure resources."
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
@@ -135,6 +156,19 @@ __get_tf_version() {
     export _TF_VERSION=$(run_cmd "${_cmd}" "${_message}" "${_flags[@]}")
 }
 
+__run_tf_init() {
+    local _cmd="terraform init"
+    local _message="Executing $(__add_emphasis_green "terraform init")"
+    local _flags=(${_DEFAULT_CMD_FLAGS[@]})
+    _flags[0]='strict'
+    # _flags[4]="no_print_message"
+    # _flags[5]="no_print_status"
+    # _flags[6]="no_print_outcome"
+
+    # execute
+    run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
+}
+
 ## Main Terraform wrapper control logic
 __tf_controller() {
     # get Terraform version from CLI
@@ -147,7 +181,15 @@ __tf_controller() {
     # build targeted wrapper command function name
     local wrapper_action_method="__run_action_${_TF_ACTION}"
 
+    # Informal notice for current directory
     info "Running from ${PWD}"
+
+    # ensure modules and providers are initialised
+    __run_tf_init
+
+    ### Check terraform workspace exists and is active
+    ###############################################################################
+    __validate_tf_workspace
 
     # execute function
     $wrapper_action_method

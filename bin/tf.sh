@@ -51,10 +51,6 @@ __validate_tf_action
 ###############################################################################
 cd "${TF_MODULE_PATH}/${_MODULE}"
 
-### Check terraform workspace exists and is active
-###############################################################################
-__validate_tf_workspace
-
 ### Build terraform action command
 ###############################################################################
 __tf_controller
