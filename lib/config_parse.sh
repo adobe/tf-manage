@@ -1,13 +1,13 @@
 ## prepare config_not_found error
 __config_not_found_err() {
 err_part1=$(decorate_error <<-HEREDOC
-    Couldn\'t find tf-manage config file $(__add_emphasis_blue ${__tfm_conf_path##*/}) for $(__add_emphasis_blue ${__tfm_project_dir##*/})
-    You must create it at ${__tfm_conf_path}
+    Couldn\'t find tf-manage config file $(__add_emphasis_blue ${__tfm_project_config_path##*/}) for $(__add_emphasis_blue ${__tfm_project_dir##*/})
+    You must create it at ${__tfm_project_config_path}
     Or generate it, by running the snippet below:
 HEREDOC)
 
 generate_snippet=$(cat <<-HEREDOC
-cat > ${__tfm_conf_path} <<-EOF
+cat > ${__tfm_project_config_path} <<-EOF
 #!/bin/bash
 export __tfm_env_rel_path='terraform/environments'
 export __tfm_module_rel_path='terraform/modules'
