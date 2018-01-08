@@ -125,7 +125,7 @@ __validate_product() {
 
 __validate_tf_workspace() {
     ## Auto-generate workspace name
-    local workspace="${__tfm_project_name}-${_COMPONENT}-${_MODULE}-${_ENV}-${_VARS/\.tfvars/}"
+    local workspace="${TF_WORKSPACE_GENERATED}"
     local workspace_override='false'
 
     ## Check for workspace override

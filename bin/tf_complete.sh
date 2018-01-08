@@ -79,7 +79,7 @@ _tfm_suggest_config() {
     __safe_unset_bash_setting 'u'
 
     # find config files
-    __suggest_from_path "${TF_CONFIG_PATH}/${selected_env}/${selected_module}" "${search_filter}"
+    __suggest_from_path "${TF_CONFIG_PATH}/${selected_env}/${selected_module}" "${search_filter}" | grep -v 'tfvars'
     return $?
 }
 
@@ -118,6 +118,9 @@ _tf_manage_complete() {
 
     # if we have a config error, do not continue to build suggestions
     [ "${result}" -ne 0 ] && return 1
+
+    # get global variables inferred by the wrapper
+    __compute_common_paths
 
     # initialize bash completion variables
     local cur_word prev_word type_list

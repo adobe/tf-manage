@@ -35,6 +35,9 @@ _WORKSPACE_OVERRIDE=${6:-workspace=}
 __load_global_config
 __load_project_config
 
+# get global variables inferred by the wrapper
+__compute_common_paths
+
 ### Check folder structure is valid
 ###############################################################################
 __validate_product

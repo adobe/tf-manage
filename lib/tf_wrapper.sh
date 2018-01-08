@@ -6,8 +6,8 @@ __run_action_plan() {
     debug "Entered ${FUNCNAME}"
 
     # vars
-    local var_file_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}"
-    local plan_file_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}.tfplan"
+    local var_file_path="${TF_VAR_FILE_PATH}"
+    local plan_file_path="${TF_PLAN_FILE_PATH}"
 
     # build wrapper command
     local _cmd="terraform ${_TF_ACTION} -var-file='${var_file_path}' -out ${plan_file_path}"
@@ -26,7 +26,7 @@ __run_action_plan() {
 
 __run_action_apply() {
     # vars
-    local plan_file_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}.tfplan"
+    local plan_file_path="${TF_PLAN_FILE_PATH}"
 
     # build wrapper command
     local _cmd="terraform ${_TF_ACTION} ${plan_file_path}"
@@ -47,7 +47,7 @@ __run_action_apply() {
 
 __run_action_plan_and_apply() {
     # vars
-    local var_file_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}"
+    local var_file_path="${TF_VAR_FILE_PATH}"
 
     # build wrapper command
     local _cmd="terraform apply -var-file='${var_file_path}'"
@@ -70,7 +70,7 @@ __run_action_destroy() {
     debug "Entered ${FUNCNAME}"
 
     # vars
-    local var_file_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}"
+    local var_file_path="${TF_VAR_FILE_PATH}"
 
     # build wrapper command
     local _cmd="terraform ${_TF_ACTION} -var-file='${var_file_path}'"
@@ -132,7 +132,7 @@ __run_action_refresh() {
     debug "Entered ${FUNCNAME}"
 
     # vars
-    local var_file_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}"
+    local var_file_path="${TF_VAR_FILE_PATH}"
 
     # build wrapper command
     local _cmd="terraform ${_TF_ACTION} -var-file='${var_file_path}'"

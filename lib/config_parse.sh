@@ -64,3 +64,12 @@ __load_global_config() {
     # pass command exit-code to caller
     return ${result}
 }
+
+__compute_common_paths() {
+    ## file locations
+    export TF_VAR_FILE_PATH="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}"
+    export TF_PLAN_FILE_PATH="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}.tfplan"
+
+    ## generated values
+    export TF_WORKSPACE_GENERATED="${__tfm_project_name}.${_COMPONENT}.${_MODULE}.${_ENV}.${_VARS/\.tfvars/}"
+}
