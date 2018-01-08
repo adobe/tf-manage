@@ -79,7 +79,7 @@ _tfm_suggest_config() {
     __safe_unset_bash_setting 'u'
 
     # find config files
-    __suggest_from_path "${TF_CONFIG_PATH}/${selected_env}/${selected_module}" "${search_filter}" | grep -v 'tfplan'
+    __suggest_from_path "${TF_CONFIG_PATH}/${selected_env}/${selected_module}" "${search_filter}" | grep -v 'tfplan' | sed 's,\.tfvars,,g'
     return $?
 }
 
