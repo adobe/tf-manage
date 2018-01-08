@@ -43,8 +43,8 @@ __load_project_config() {
     [ $result -eq 0 ] && source ${__tfm_project_config_path}
 
     # build project paths
-    export TF_MODULE_PATH="${__tfm_project_dir}/${__tfm_module_rel_path}"
-    export TF_CONFIG_PATH="${__tfm_project_dir}/${__tfm_env_rel_path}"
+    export TF_PROJECT_MODULE_PATH="${__tfm_project_dir}/${__tfm_module_rel_path}"
+    export TF_PROJECT_CONFIG_PATH="${__tfm_project_dir}/${__tfm_env_rel_path}"
 
     # pass command exit-code to caller
     return ${result}
@@ -67,7 +67,10 @@ __load_global_config() {
 
 __compute_common_paths() {
     ## file locations
-    export TF_VAR_FILE_PATH="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}"
+    export TF_MODULE_PATH="${TF_CONFIG_PATH}/${_MODULE}"
+    export TF_ENV_PATH="${TF_CONFIG_PATH}/${_ENV}"
+    export TF_MODULE_ENV_CONF_PATH="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}"
+    export TF_VAR_FILE_PATH="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}.tfvars"
     export TF_PLAN_FILE_PATH="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}.tfplan"
 
     ## generated values

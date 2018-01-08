@@ -19,7 +19,7 @@ HEREDOC)
 
 __validate_module_dir() {
     # compute project module dir path
-    local dir_path="${TF_MODULE_PATH}"
+    local dir_path="${TF_PROJECT_MODULE_PATH}"
     local dir_path_emph="$(__add_emphasis_blue ${dir_path})"
 
     ## Check dir exists
@@ -27,7 +27,7 @@ __validate_module_dir() {
     run_cmd_silent_strict "${_cmd}" "Checking module dir exists" "$(__tfm_project_dir_not_found_err "module" "${dir_path}" "__tfm_module_rel_path")"
 
     ## Check selected module exists
-    local module_path="${dir_path}/${_MODULE}"
+    local module_path="${TF_MODULE_PATH}"
     local module_name_emph="$(__add_emphasis_blue ${_MODULE})"
     _cmd="test -d ${module_path}"
     run_cmd_strict "${_cmd}" "Checking module ${module_name_emph} exists" "$(echo -e "Module ${module_name_emph} not found at ${dir_path_emph}" | decorate_error)"
@@ -43,7 +43,7 @@ __validate_env_dir() {
     run_cmd_silent_strict "${_cmd}" "Checking environment dir exists" "$(__tfm_project_dir_not_found_err "environment" "${dir_path}" "__tfm_env_rel_path")"
 
     ## Check selected environment exists
-    local env_path="${dir_path}/${_ENV}"
+    local env_path="${TF_ENV_PATH}"
     local env_name_emph="$(__add_emphasis_blue ${_ENV})"
     _cmd="test -d ${env_path}"
     run_cmd_strict "${_cmd}" "Checking environment ${env_name_emph} exists" "$(echo -e "Environment ${env_name_emph} not found at ${dir_path_emph}" | decorate_error)"
@@ -51,7 +51,7 @@ __validate_env_dir() {
 
 __validate_config_path() {
     # compute project environment dir path
-    local dir_path="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}"
+    local dir_path="${TF_MODULE_ENV_CONF_PATH}"
     local dir_path_emph="$(__add_emphasis_blue ${dir_path})"
     local env_name_emph="$(__add_emphasis_blue ${_ENV})"
     local module_name_emph="$(__add_emphasis_blue ${_MODULE})"
@@ -61,7 +61,7 @@ __validate_config_path() {
     run_cmd_silent_strict "${_cmd}" "Checking module config dir exists" "$(echo -e "Module ${module_name_emph} is missing a configuration folder for environment ${env_name_emph}\nShould be at ${dir_path_emph}" | decorate_error)"
 
     ## Check selected module has configuration present in the selected env
-    local var_path="${dir_path}/${_VARS}"
+    local var_path="${TF_VAR_FILE_PATH}"
     local var_path_emph="$(__add_emphasis_blue ${var_path##*/})"
     local var_path_abs_emph="$(__add_emphasis_blue ${var_path})"
     _cmd="test -f ${var_path}"
@@ -156,7 +156,7 @@ __validate_tf_workspace() {
     ## NOTE: Changing to the module directory is needed for local workspace support
     if [ "${result}" -ne 0 ]; then
         # prepare command and notice
-        local _cmd="cd ${TF_MODULE_PATH}/${_MODULE} && terraform workspace new ${workspace} && cd -"
+        local _cmd="cd ${TF_MODULE_PATH} && terraform workspace new ${workspace} && cd -"
         local _message="Creating workspace ${workspace_emph_red}"
         local _flags=(${_DEFAULT_CMD_FLAGS[@]})
         _flags[0]="strict"
@@ -175,6 +175,6 @@ __validate_tf_workspace() {
 
     ## Selecting workspace
     ## NOTE: Changing to the module directory is needed for local workspace support
-    _cmd="cd ${TF_MODULE_PATH}/${_MODULE} && terraform workspace select ${workspace} && cd -"
+    _cmd="cd ${TF_MODULE_PATH} && terraform workspace select ${workspace} && cd -"
     run_cmd_strict "${_cmd}" "Selecting workspace ${workspace_emph}" "Could not select workspace!"
 }
