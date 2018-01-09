@@ -142,7 +142,7 @@ __validate_tf_workspace() {
     [ "${workspace_override}" = 'true' ] && info "Using workspace override ${workspace_emph_red}"
 
     ## Check workspace exists
-    local _cmd="terraform workspace list | grep ${workspace}"
+    local _cmd="terraform workspace list | grep '${workspace//\./\\.}'"
     local _message="Checking workspace ${workspace_emph} exists"
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
     _flags[3]="no_print_output"

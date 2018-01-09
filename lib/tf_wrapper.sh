@@ -22,6 +22,10 @@ __run_action_plan() {
     info "${_message}"
     info "${_extra_notice}"
     run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
+
+    # inform user .tfplan file was created
+    local plan_file_emph="$(__add_emphasis_blue "${plan_file_path}")"
+    info "Created Terraform plan file: ${plan_file_emph}"
 }
 
 __run_action_apply() {
@@ -185,7 +189,7 @@ __tf_controller() {
     info "Running from ${PWD}"
 
     # ensure modules and providers are initialised
-    __run_tf_init
+    # __run_tf_init
 
     ### Check terraform workspace exists and is active
     ###############################################################################

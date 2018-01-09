@@ -52,7 +52,7 @@ __validate_tf_action
 
 ### Switch to targeted module path
 ###############################################################################
-cd "${TF_MODULE_PATH}/${_MODULE}"
+cd "${TF_MODULE_PATH}"
 
 ### Build terraform action command
 ###############################################################################

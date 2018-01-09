@@ -67,12 +67,18 @@ __load_global_config() {
 
 __compute_common_paths() {
     ## file locations
-    export TF_MODULE_PATH="${TF_CONFIG_PATH}/${_MODULE}"
-    export TF_ENV_PATH="${TF_CONFIG_PATH}/${_ENV}"
+    # selected module folder
+    export TF_MODULE_PATH="${TF_PROJECT_MODULE_PATH}/${_MODULE}"
+    # selected environment folder
+    export TF_ENV_PATH="${TF_PROJECT_CONFIG_PATH}/${_ENV}"
+    # selected per-environment module config folder
     export TF_MODULE_ENV_CONF_PATH="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}"
-    export TF_VAR_FILE_PATH="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}.tfvars"
-    export TF_PLAN_FILE_PATH="${TF_CONFIG_PATH}/${_ENV}/${_MODULE}/${_VARS}.tfplan"
+    # selected per-environment module config var-file
+    export TF_VAR_FILE_PATH="${TF_MODULE_ENV_CONF_PATH}/${_VARS}.tfvars"
+    # selected per-environment module config tfplan file
+    export TF_PLAN_FILE_PATH="${TF_MODULE_ENV_CONF_PATH}/${_VARS}.tfvars.tfplan"
 
     ## generated values
-    export TF_WORKSPACE_GENERATED="${__tfm_project_name}.${_COMPONENT}.${_MODULE}.${_ENV}.${_VARS/\.tfvars/}"
+    # auto-selected workspace name, composed from component, module, env and var-file name
+    export TF_WORKSPACE_GENERATED="${__tfm_project_name}.${_COMPONENT}.${_MODULE}.${_ENV}.${_VARS}"
 }
