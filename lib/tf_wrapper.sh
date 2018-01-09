@@ -28,7 +28,7 @@ __run_action_plan() {
     info "Created Terraform plan file: ${plan_file_emph}"
 }
 
-__run_action_apply() {
+__run_action_apply_tfplan() {
     # vars
     local plan_file_path="${TF_PLAN_FILE_PATH}"
 
@@ -49,7 +49,7 @@ __run_action_apply() {
     run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
 }
 
-__run_action_plan_and_apply() {
+__run_action_apply() {
     # vars
     local var_file_path="${TF_VAR_FILE_PATH}"
 
