@@ -35,7 +35,7 @@ __validate_module_dir() {
 
 __validate_env_dir() {
     # compute project environment dir path
-    local dir_path="${TF_CONFIG_PATH}"
+    local dir_path="${TF_PROJECT_CONFIG_PATH}"
     local dir_path_emph="$(__add_emphasis_blue ${dir_path})"
 
     ## Check dir exists
