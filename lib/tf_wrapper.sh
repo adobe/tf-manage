@@ -148,7 +148,23 @@ __run_action_refresh() {
     run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
 }
 
+__run_action_fmt() {
+    debug "Entered ${FUNCNAME}"
+
+    # build wrapper command
+    local _cmd="terraform fmt"
+    local _message="Executing $(__add_emphasis_green "terraform fmt")"
+    local _flags=(${_DEFAULT_CMD_FLAGS[@]})
+    _flags[0]='strict'
+
+    # execute
+    run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
+}
+
 __get_tf_version() {
+    debug "Entered ${FUNCNAME}"
+
+    # build wrapper command
     local _cmd="terraform --version | head -1 | grep -o 'v.*'"
     local _message="Getting terraform version"
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
@@ -158,19 +174,6 @@ __get_tf_version() {
 
     # store
     export _TF_VERSION=$(run_cmd "${_cmd}" "${_message}" "${_flags[@]}")
-}
-
-__run_tf_init() {
-    local _cmd="terraform init"
-    local _message="Executing $(__add_emphasis_green "terraform init")"
-    local _flags=(${_DEFAULT_CMD_FLAGS[@]})
-    _flags[0]='strict'
-    # _flags[4]="no_print_message"
-    # _flags[5]="no_print_status"
-    # _flags[6]="no_print_outcome"
-
-    # execute
-    run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
 }
 
 ## Main Terraform wrapper control logic
@@ -188,12 +191,13 @@ __tf_controller() {
     # Informal notice for current directory
     info "Running from ${PWD}"
 
-    # ensure modules and providers are initialised
-    # __run_tf_init
-
     ### Check terraform workspace exists and is active
     ###############################################################################
-    __validate_tf_workspace
+    if [ "${_TF_ACTION}" != "init" ]; then  # don't need a workspace for running "init"
+    if [ "${_TF_ACTION}" != "fmt" ]; then   # don't need a workspace for running "fmt"
+        __validate_tf_workspace
+    fi
+    fi
 
     # execute function
     $wrapper_action_method
