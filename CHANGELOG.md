@@ -1,4 +1,6 @@
 # tf-manage
+### 4.1.2
+- [fix] properly suggest products from current repo, instead of all allowed products
 
 ## Changelog
 ### 4.1.1

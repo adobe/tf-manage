@@ -55,7 +55,7 @@ __suggest_from_path() {
 }
 
 _tfm_suggest_product() {
-    echo "${__tfm_allowed_products[@]}"
+    __suggest_from_path "${TF_PROJECT_CONFIG_PATH}"
     return $?
 }
 
