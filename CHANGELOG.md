@@ -1,6 +1,77 @@
 # tf-manage
 
 ## Changelog
+### 4.0.0
+- [vendor] upgrade to bash-framework 0.6.1
+- [removed] product name from .tfm config
+- [added] product name parameter
+- [changed] var-files are now found under `terraform/environment/${product}/${env}/${module}/${component}.tfvars`
+
+### 3.4.1
+- [fix] workspace check regex is no longer sensitive to workspaces with names that are substring of others
+- [vendor] upgrade to bash-framework 0.6.0
+
+### 3.4.0
+- [added] new commands: fmt
+- [fix] init command: no longer relies on workspace validation
+
+### 3.3.1
+- [fix] broken reference after variable refactoring
+
+### 3.3.0
+- [enhancement] renamed wrapper commands to better match post 0.11.x default behaviours
+    + apply --> apply_tfplan
+    + plan_and_apply --> apply
+
+### 3.2.0
+- [removed] auto-init each run (was too time consuming and did not work well for all use cases)
+- [fix] refactored project paths
+- [added] extra notice when creating .tfplan files
+
+### 3.1.1
+- [enhancement] refactored computerd project paths
+
+### 3.1.0
+- [enhancement] .tfvars suggestsions no longer contain redundant extensions in the suggestions
+
+### 3.0.1
+- [fix] tfvars suggestions also included .tfplan files
+
+### 3.0.0
+- [added] new workspace naming convention
+- [enhancement] removed code duplication for common value computation
+
+### 2.0.1
+- [fix] __tfm_project_config_path var was broken
+
+### 2.0.0
+- [added] new commands: plan_and_apply (terraform 0.11+ only)
+- [enchacement] now running init before all commands
+- [fix] .tfplan file names are now unique for each var-file
+
+### 1.3.0
+- [added] new commands: init
+
+### 1.2.1
+- [fix] destroy command
+- [enchacement] now printing terraform command on destroy
+- [enchacement] now printing terraform command on plan
+
+### 1.2.0
+- [added] new commands: output and refresh
+- [enchacement] now printing terraform command on apply
+
+### 1.1.0
+- [added] support for plan file
+- [added] workspace override
+- [added] whitelist entry for ops projects
+
+### 1.0.2
+- enhanced wrapper messages, to better reflect impact
+
+### 1.0.1
+- clean extra newlines
+
 ### 1.0.0
 - first functional wrapper with support for plan, apply and destroy
 - upgrade to bash-framework v0.4.3
