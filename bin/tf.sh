@@ -20,15 +20,16 @@ function usage {
 }
 
 # number of arguments
-( [ "$#" -lt 5 ] || [ "$#" -gt 6 ] ) && usage
+( [ "$#" -lt 6 ] || [ "$#" -gt 7 ] ) && usage
 
 # gather input vars
-_COMPONENT=${1}
-_MODULE=${2}
-_ENV=${3}
-_VARS=${4}
-_TF_ACTION=${5}
-_WORKSPACE_OVERRIDE=${6:-workspace=}
+_PRODUCT=${1}
+_COMPONENT=${2}
+_MODULE=${3}
+_ENV=${4}
+_VARS=${5}
+_TF_ACTION=${6}
+_WORKSPACE_OVERRIDE=${7:-workspace=}
 
 ### Load configuration
 ###############################################################################

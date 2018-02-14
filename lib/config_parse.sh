@@ -11,14 +11,12 @@ cat > ${__tfm_project_config_path} <<-EOF
 #!/bin/bash
 export __tfm_env_rel_path='terraform/environments'
 export __tfm_module_rel_path='terraform/modules'
-export __tfm_project_name='dpsc or aemm'
 EOF
 HEREDOC)
 
 err_part2=$(decorate_error <<-HEREDOC
     You can customize the values if needed
     Then, re-run the script after you\'re done
-    $(__add_emphasis_blue NOTE:) make sure to choose either $(__add_emphasis_blue aemm) or $(__add_emphasis_blue dpsc) for the $(__add_emphasis_blue __tfm_project_name) setting!
 HEREDOC)
 
     echo -ne "\n${err_part1}\n${generate_snippet}\n${err_part2}"
@@ -80,5 +78,5 @@ __compute_common_paths() {
 
     ## generated values
     # auto-selected workspace name, composed from component, module, env and var-file name
-    export TF_WORKSPACE_GENERATED="${__tfm_project_name}.${_COMPONENT}.${_MODULE}.${_ENV}.${_VARS}"
+    export TF_WORKSPACE_GENERATED="${_PRODUCT}.${_COMPONENT}.${_MODULE}.${_ENV}.${_VARS}"
 }

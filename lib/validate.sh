@@ -109,22 +109,16 @@ __validate_component() {
 
 __validate_product() {
     local valid_products="${__tfm_allowed_products}"
-    local product="${__tfm_project_name}"
+    local product="${_PRODUCT}"
     local product_emph="$(__add_emphasis_blue "${product}")"
-    local config_key_emph="$(__add_emphasis_blue '__tfm_project_name')"
-    local project_config_emph="$(__add_emphasis_blue "${__tfm_project_config_path}")"
     local global_config_path="${__tfm_conf_dir}/global_config.sh"
     local global_config_path_emph="$(__add_emphasis_blue ${global_config_path})"
-
-    ## Check product is set
-    _cmd="! test -z ${product}"
-    run_cmd_silent_strict "${_cmd}" "Checking product is set" "$(echo -e "Product is unset\n${config_key_emph} must be set in ${project_config_emph}\nValid options include: ${valid_products[@]}" | decorate_error)"
 
     ## Check selected product is whitelisted
     __assert_string_list_contains "${product}" "${valid_products}"
     result=$?
     _cmd="test ${result} -eq 0"
-    run_cmd_strict "${_cmd}" "Checking product ${product_emph} is valid" "$(echo -e "Product \"${product_emph}\" is invalid!\nValid options include:\n$(__print_valid_options "${valid_products}")\nPlease update ${config_key_emph} in ${project_config_emph}\nNew products can be whitelisted by tf-manage developers at ${global_config_path_emph}" | decorate_error)"
+    run_cmd_strict "${_cmd}" "Checking product ${product_emph} is valid" "$(echo -e "Product \"${product_emph}\" is invalid!\nValid options include:\n$(__print_valid_options "${valid_products}")\nNew products can be whitelisted by tf-manage developers at ${global_config_path_emph}" | decorate_error)"
 }
 
 __validate_tf_workspace() {
