@@ -68,9 +68,9 @@ __compute_common_paths() {
     # selected module folder
     export TF_MODULE_PATH="${TF_PROJECT_MODULE_PATH}/${_MODULE}"
     # selected environment folder
-    export TF_ENV_PATH="${TF_PROJECT_CONFIG_PATH}/${_ENV}"
+    export TF_ENV_PATH="${TF_PROJECT_CONFIG_PATH}/${_PRODUCT}/${_ENV}"
     # selected per-environment module config folder
-    export TF_MODULE_ENV_CONF_PATH="${TF_PROJECT_CONFIG_PATH}/${_ENV}/${_MODULE}"
+    export TF_MODULE_ENV_CONF_PATH="${TF_PROJECT_CONFIG_PATH}/${_PRODUCT}/${_ENV}/${_MODULE}"
     # selected per-environment module config var-file
     export TF_VAR_FILE_PATH="${TF_MODULE_ENV_CONF_PATH}/${_VARS}.tfvars"
     # selected per-environment module config tfplan file

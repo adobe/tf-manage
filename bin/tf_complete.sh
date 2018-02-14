@@ -71,20 +71,27 @@ _tfm_suggest_module() {
 }
 
 _tfm_suggest_env() {
-    __suggest_from_path "${TF_PROJECT_CONFIG_PATH}"
+    # input vars
+    __safe_set_bash_setting 'u'
+    local selected_product="${1}"
+    __safe_unset_bash_setting 'u'
+
+    # find env folders
+    __suggest_from_path "${TF_PROJECT_CONFIG_PATH}/${selected_product}"
     return $?
 }
 
 _tfm_suggest_config() {
     # input vars
     __safe_set_bash_setting 'u'
-    local selected_env="${1}"
-    local selected_module="${2}"
-    local search_filter="${3:-.*\.tfvars}"
+    local selected_product="${1}"
+    local selected_env="${2}"
+    local selected_module="${3}"
+    local search_filter="${4:-.*\.tfvars}"
     __safe_unset_bash_setting 'u'
 
     # find config files
-    __suggest_from_path "${TF_PROJECT_CONFIG_PATH}/${selected_env}/${selected_module}" "${search_filter}" | grep -v 'tfplan' | sed 's,\.tfvars,,g'
+    __suggest_from_path "${TF_PROJECT_CONFIG_PATH}/${selected_product}/${selected_env}/${selected_module}" "${search_filter}" | grep -v 'tfplan' | sed 's,\.tfvars,,g'
     return $?
 }
 
@@ -145,10 +152,13 @@ _tf_manage_complete() {
     elif [ $COMP_CWORD -eq 3 ]; then
         COMPREPLY=( $(compgen -W "$(_tfm_suggest_module)" -- $cur_word) )
     elif [ $COMP_CWORD -eq 4 ]; then
-        COMPREPLY=( $(compgen -W "$(_tfm_suggest_env)" -- $cur_word) )
+        selected_product="${COMP_WORDS[$COMP_CWORD-3]}"
+        COMPREPLY=( $(compgen -W "$(_tfm_suggest_env ${selected_product})" -- $cur_word) )
     elif [ $COMP_CWORD -eq 5 ]; then
-        prev2_word="${COMP_WORDS[$COMP_CWORD-2]}"
-        COMPREPLY=( $(compgen -W "$(_tfm_suggest_config ${prev_word} ${prev2_word})" -- $cur_word) )
+        selected_env="${COMP_WORDS[$COMP_CWORD-1]}"
+        selected_module="${COMP_WORDS[$COMP_CWORD-2]}"
+        selected_product="${COMP_WORDS[$COMP_CWORD-4]}"
+        COMPREPLY=( $(compgen -W "$(_tfm_suggest_config ${selected_product} ${selected_env} ${selected_module})" -- $cur_word) )
     elif [ $COMP_CWORD -eq 6 ]; then
         COMPREPLY=( $(compgen -W "$(_tfm_suggest_action)" -- $cur_word) )
     elif [ $COMP_CWORD -eq 7 ]; then
