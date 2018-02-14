@@ -1,6 +1,12 @@
 # tf-manage
 
 ## Changelog
+### 4.1.0
+- [removed] "ops" no longer allowed product 
+- [added] "ROOT" is a new allowed product
+    + not suggested by the completion script, but still valid
+    + used to create the remote state "inception" stack (first_state)
+
 ### 4.0.0
 - [vendor] upgrade to bash-framework 0.6.1
 - [removed] product name from .tfm config

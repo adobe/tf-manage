@@ -108,7 +108,7 @@ __validate_component() {
 }
 
 __validate_product() {
-    local valid_products="${__tfm_allowed_products}"
+    local valid_products="${__tfm_allowed_products} ROOT" # ROOT product is just for the remote state foundation stack
     local product="${_PRODUCT}"
     local product_emph="$(__add_emphasis_blue "${product}")"
     local global_config_path="${__tfm_conf_dir}/global_config.sh"
