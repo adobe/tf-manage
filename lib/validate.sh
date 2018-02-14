@@ -43,6 +43,8 @@ __validate_env_dir() {
     run_cmd_silent_strict "${_cmd}" "Checking environment dir exists" "$(__tfm_project_dir_not_found_err "environment" "${dir_path}" "__tfm_env_rel_path")"
 
     ## Check selected environment exists
+    local dir_path="${TF_ENV_PRODUCT_PATH}"
+    local dir_path_emph="$(__add_emphasis_blue ${dir_path})"
     local env_path="${TF_ENV_PATH}"
     local env_name_emph="$(__add_emphasis_blue ${_ENV})"
     _cmd="test -d ${env_path}"

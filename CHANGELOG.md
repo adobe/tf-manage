@@ -1,6 +1,10 @@
 # tf-manage
 
 ## Changelog
+### 4.1.1
+- [added] "ops" as allowed product until we can automatically rename workspaces with a helper script
+- [fix] environment folder checks now show correct paths to check in error message
+
 ### 4.1.0
 - [removed] "ops" no longer allowed product 
 - [added] "ROOT" is a new allowed product
