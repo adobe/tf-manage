@@ -110,17 +110,14 @@ __validate_component() {
 }
 
 __validate_product() {
-    local valid_products="${__tfm_allowed_products} ROOT" # ROOT product is just for the remote state foundation stack
     local product="${_PRODUCT}"
     local product_emph="$(__add_emphasis_blue "${product}")"
-    local global_config_path="${__tfm_conf_dir}/global_config.sh"
-    local global_config_path_emph="$(__add_emphasis_blue ${global_config_path})"
+    local dir_path="${TF_PROJECT_CONFIG_PATH}/${_PRODUCT}"
+    local dir_path_emph="$(__add_emphasis_blue ${dir_path})"
 
     ## Check selected product is whitelisted
-    __assert_string_list_contains "${product}" "${valid_products}"
-    result=$?
-    _cmd="test ${result} -eq 0"
-    run_cmd_strict "${_cmd}" "Checking product ${product_emph} is valid" "$(echo -e "Product \"${product_emph}\" is invalid!\nValid options include:\n$(__print_valid_options "${valid_products}")\nNew products can be whitelisted by tf-manage developers at ${global_config_path_emph}" | decorate_error)"
+    _cmd="test -d ${dir_path}"
+    run_cmd_strict "${_cmd}" "Checking product ${product_emph} is valid" "$(echo -e "Product path \"${dir_path_emph}\" was not found!\n" | decorate_error)"
 }
 
 __validate_tf_workspace() {

@@ -1,4 +1,7 @@
 # tf-manage
+### 4.2.0
+- [removed] we no longer validate against a strict list of allowed products
+
 ### 4.1.2
 - [fix] properly suggest products from current repo, instead of all allowed products
 
