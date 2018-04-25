@@ -1,4 +1,10 @@
 # tf-manage
+### 4.2.2
+- [fix] attempting to use tf completion in a git-less folder, no longer exists your shell
+
+### 4.2.1
+- [vendor] aemm-sre-tools/bash-framework moved to mob-sre-tools/bash-framework (the org was renamed)
+
 ### 4.2.0
 - [removed] we no longer validate against a strict list of allowed products
 

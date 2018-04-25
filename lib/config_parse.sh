@@ -27,7 +27,7 @@ __load_project_config() {
     ## Note: the assumption is that you're running the terraform wrapper from
     ##       within a git infrastructure repository
     export __tfm_project_dir="$(git rev-parse --show-toplevel 2> /dev/null)"
-    [ -z "${__tfm_project_dir}" ] && echo -e "Could not find a git repository at the current path!\nTerraform modules must be in their own git repository." | decorate_error && exit 1
+    [ -z "${__tfm_project_dir}" ] && echo -e "Could not find a git repository at the current path!\nTerraform modules must be in their own git repository." | decorate_error && return 1
 
     ## the default tf-manage configuration path
     export __tfm_project_config_path="${__tfm_project_dir}/.tfm.conf"
