@@ -8,11 +8,11 @@ err_part1=$(decorate_error <<-HEREDOC
     Please check ${__tfm_conf_path} for the $(__add_emphasis_blue ${tfm_dir_variable}) entry.
     The current setting is ${tfm_dir_variable}=$(__add_emphasis_blue ${!tfm_dir_variable})
     Or generate it, by running the snippet below:
-HEREDOC)
+HEREDOC
 
 generate_snippet=$(cat <<-HEREDOC
     mkdir -p ${__tfm_project_dir}/${!tfm_dir_variable}
-HEREDOC)
+HEREDOC
 
     echo -ne "${err_part1}\n${generate_snippet}"
 }
