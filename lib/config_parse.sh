@@ -86,7 +86,7 @@ __compute_common_paths() {
 }
 
 __detect_env() {
-    case USER in
+    case "${USER}" in
         jenkins )
             export TF_EXEC_MODE='CI'
             local tf_exec_mode_red="$(__add_emphasis_red "${TF_EXEC_MODE}")"
