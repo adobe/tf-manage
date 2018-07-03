@@ -56,6 +56,9 @@ __load_project_config
 # get global variables inferred by the wrapper
 __compute_common_paths
 
+# check if we're on a dev box or a jenkins slave
+__detect_env
+
 ### Check folder structure is valid
 ###############################################################################
 __validate_product

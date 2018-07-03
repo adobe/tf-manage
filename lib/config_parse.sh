@@ -84,3 +84,19 @@ __compute_common_paths() {
     # auto-selected workspace name, composed from component, module, env and var-file name
     export TF_WORKSPACE_GENERATED="${_PRODUCT}.${_COMPONENT}.${_MODULE}.${_ENV}.${_VARS}"
 }
+
+__detect_env() {
+    case USER in
+        jenkins )
+            export TF_EXEC_MODE='CI'
+            local tf_exec_mode_red="$(__add_emphasis_red "${TF_EXEC_MODE}")"
+            ;;
+        * )
+            export TF_EXEC_MODE='DEV'
+            local tf_exec_mode_red="$(__add_emphasis_blue "${TF_EXEC_MODE}")"
+            ;;
+    esac
+
+    # report exec mode
+    info "Detected exec mode: ${tf_exec_mode_red}"
+}
