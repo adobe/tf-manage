@@ -4,7 +4,7 @@ err_part1=$(decorate_error <<-HEREDOC
     Couldn\'t find tf-manage config file $(__add_emphasis_blue ${__tfm_project_config_path##*/}) for $(__add_emphasis_blue ${__tfm_project_dir##*/})
     You must create it at ${__tfm_project_config_path}
     Or generate it, by running the snippet below:
-HEREDOC)
+HEREDOC
 
 generate_snippet=$(cat <<-HEREDOC
 cat > ${__tfm_project_config_path} <<-EOF
@@ -12,12 +12,12 @@ cat > ${__tfm_project_config_path} <<-EOF
 export __tfm_env_rel_path='terraform/environments'
 export __tfm_module_rel_path='terraform/modules'
 EOF
-HEREDOC)
+HEREDOC
 
 err_part2=$(decorate_error <<-HEREDOC
     You can customize the values if needed
     Then, re-run the script after you\'re done
-HEREDOC)
+HEREDOC
 
     echo -ne "\n${err_part1}\n${generate_snippet}\n${err_part2}"
 }
