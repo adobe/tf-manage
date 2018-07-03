@@ -9,10 +9,12 @@ err_part1=$(decorate_error <<-HEREDOC
     The current setting is ${tfm_dir_variable}=$(__add_emphasis_blue ${!tfm_dir_variable})
     Or generate it, by running the snippet below:
 HEREDOC
+)
 
 generate_snippet=$(cat <<-HEREDOC
     mkdir -p ${__tfm_project_dir}/${!tfm_dir_variable}
 HEREDOC
+)
 
     echo -ne "${err_part1}\n${generate_snippet}"
 }
