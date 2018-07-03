@@ -1,9 +1,26 @@
 #!/bin/bash
 
+### Platform check
+###############################################################################
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
+
+### Binary set
+###############################################################################
+case "${machine}" in
+    Linux*)     BIN_READLINK="readlink";;
+    Mac*)       BIN_READLINK="greadlink";;
+    *)          BIN_READLINK="readlink";;
+esac
+
 ### Framework boilerplate
 ###############################################################################
 # calculate script root dir
-ROOT_DIR="$( dirname $(realpath ${BASH_SOURCE[0]}) )"
+ROOT_DIR="$( dirname $(${BIN_READLINK} -f ${BASH_SOURCE[0]}) )"
 
 # import bash framework
 source "${ROOT_DIR}/../vendor/bash-framework/lib/import.sh"
