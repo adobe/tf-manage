@@ -145,7 +145,7 @@ __validate_tf_workspace() {
     local _message="Checking workspace ${workspace_emph} exists"
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
     # if we're in a non-interactive environment, fail immediately
-    [ "${TF_EXEC_MODE}" = 'CI' ] && _flags[0]="strict"
+    [ "${TF_EXEC_MODE}" = 'unattended' ] && _flags[0]="strict"
     _flags[1]="no_print_cmd"
     _flags[3]="no_print_output"
     _flags[4]="no_print_message"

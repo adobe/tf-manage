@@ -1,4 +1,19 @@
 # tf-manage
+### 4.4.0
+- [added] "unattended" mode now refuses input for "apply" commands and auto-accepts changes
+
+### 4.3.1
+- [fix] fix $USER env var evaluation
+
+### 4.3.0
+- [added] initial support for running in CI environments
+
+### 4.2.4, 4.2.5, 4.2.6
+- [fix] HEREDOC syntax errors and regressions
+
+### 4.2.3
+- [added] proper detection of OSX vs Linux environments
+
 ### 4.2.2
 - [fix] attempting to use tf completion in a git-less folder, no longer exists your shell
 

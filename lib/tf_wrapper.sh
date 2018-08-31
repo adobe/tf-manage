@@ -18,9 +18,11 @@ __run_action_plan() {
     _flags[1]='print_cmd'
     _flags[4]="no_print_message"
 
-    # execute
+    # notify user
     info "${_message}"
     info "${_extra_notice}"
+
+    # execute
     run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
 
     # inform user .tfplan file was created
@@ -41,7 +43,7 @@ __run_action_apply_tfplan() {
     _flags[1]='print_cmd'
     _flags[4]="no_print_message"
 
-    # execute
+    # notify user
     info "${_message}"
     info "${_extra_notice}"
 
@@ -52,9 +54,13 @@ __run_action_apply_tfplan() {
 __run_action_apply() {
     # vars
     local var_file_path="${TF_VAR_FILE_PATH}"
+    local extra_tf_args=""
+
+    # append extra arguments in case we're running in "unattended" mode
+    [ "${TF_EXEC_MODE}" = 'unattended' ] && local extra_tf_args=" -input=false -auto-approve"
 
     # build wrapper command
-    local _cmd="terraform apply -var-file='${var_file_path}'"
+    local _cmd="terraform apply -var-file='${var_file_path}'${extra_tf_args}"
     local _message="Executing $(__add_emphasis_red "terraform apply")"
     local _extra_notice="This $(__add_emphasis_red 'will') affect infrastructure resources."
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
@@ -62,7 +68,7 @@ __run_action_apply() {
     _flags[1]='print_cmd'
     _flags[4]="no_print_message"
 
-    # execute
+    # notify user
     info "${_message}"
     info "${_extra_notice}"
 
@@ -85,7 +91,7 @@ __run_action_destroy() {
     _flags[1]='print_cmd'
     _flags[4]="no_print_message"
 
-    # execute
+    # notify user
     info "${_message}"
     info "${_extra_notice}"
 

@@ -88,15 +88,25 @@ __compute_common_paths() {
 __detect_env() {
     case "${USER}" in
         jenkins )
-            export TF_EXEC_MODE='CI'
+            export TF_EXEC_MODE='unattended'
             local tf_exec_mode_red="$(__add_emphasis_red "${TF_EXEC_MODE}")"
             ;;
         * )
-            export TF_EXEC_MODE='DEV'
+            export TF_EXEC_MODE='operator'
             local tf_exec_mode_red="$(__add_emphasis_blue "${TF_EXEC_MODE}")"
             ;;
     esac
 
+    if [ -n "${TF_EXEC_MODE_OVERRIDE}" ];
+    then
+        export TF_EXEC_MODE='unattended'
+        local tf_exec_mode_red="$(__add_emphasis_red "${TF_EXEC_MODE}")"
+    fi
+
+    # extra warning message
+    local _unattended_notice="$(__add_emphasis_red "${TF_EXEC_MODE}") mode means changes are $(__add_emphasis_red 'AUTO-ACCEPTED!!!')"
+
     # report exec mode
     info "Detected exec mode: ${tf_exec_mode_red}"
+    [ "${TF_EXEC_MODE}" = 'unattended' ] && info "${_unattended_notice}"
 }
