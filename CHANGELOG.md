@@ -1,4 +1,8 @@
 # tf-manage
+### 4.4.1
+- [fix] "apply_tfplan" action now correctly runs "terraform apply"
+- [changed] used a different color for "operator" mode, to stand out from the wrapper argument value validations
+
 ### 4.4.0
 - [added] "unattended" mode now refuses input for "apply" commands and auto-accepts changes
 

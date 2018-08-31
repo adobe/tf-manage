@@ -35,7 +35,7 @@ __run_action_apply_tfplan() {
     local plan_file_path="${TF_PLAN_FILE_PATH}"
 
     # build wrapper command
-    local _cmd="terraform ${_TF_ACTION} ${plan_file_path}"
+    local _cmd="terraform apply ${plan_file_path}"
     local _message="Executing $(__add_emphasis_red "terraform apply")"
     local _extra_notice="This $(__add_emphasis_red 'will') affect infrastructure resources."
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})

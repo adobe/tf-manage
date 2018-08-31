@@ -93,7 +93,7 @@ __detect_env() {
             ;;
         * )
             export TF_EXEC_MODE='operator'
-            local tf_exec_mode_red="$(__add_emphasis_blue "${TF_EXEC_MODE}")"
+            local tf_exec_mode_red="$(__add_emphasis_green "${TF_EXEC_MODE}")"
             ;;
     esac
 
