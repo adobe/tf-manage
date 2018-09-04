@@ -90,7 +90,7 @@ _flags[6]="no_print_outcome"
 run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
 
 _message="Setting binary ownership"
-_cmd="sudo chown root:staff terraform-${version}"
+_cmd="sudo chown root: terraform-${version}"
 _flags=(${_DEFAULT_CMD_FLAGS[@]})
 _flags[0]="strict"
 _flags[4]="no_print_message"
@@ -176,7 +176,22 @@ if [ "${machine}" = 'Mac' ]; then
         info "You don't seem to have bash completion installed"
         info "The terraform wrapper also has bash completion support"
         info "Run \"brew install bash-completion && brew tap homebrew/completions\" to install it"
+        info "Add \". \$(brew --prefix)/etc/bash_completion\" to your ~/.bash_profile"
         info "Then, you can re-run this script to install completion support"
         info "You will, of course, also need homebrew for this to work"
+    fi
+elif [ "${machine}" = 'Linux' ]; then
+    if [ -e "/etc/bash_completion.d/" ]; then
+        _message="Installing bash completion for wrapper. The \"tf\" command will have bash completion support in new shells"
+        _cmd="ln -fs ${install_dir_wrapper}/bin/tf_complete.sh /etc/bash_completion.d/tf"
+        _flags=(${_DEFAULT_CMD_FLAGS[@]})
+        _flags[0]="strict"
+        _flags[4]="no_print_message"
+        run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
+    else
+        info "You don't seem to have bash completion installed"
+        info "The terraform wrapper also has bash completion support"
+        info "Run \"yum -y install bash-completion\" to install it and restart your shell"
+        info "Then, you can re-run this script to install completion support"
     fi
 fi

@@ -1,6 +1,12 @@
 # tf-manage
 A simple Terraform wrapper for organising your code and workflow.
 
+## Requirements
+### Linux
+```bash
+yum -y install wget sudo unzip git bash-completion which
+```
+
 ## Installation
 ```bash
 # clone this repo

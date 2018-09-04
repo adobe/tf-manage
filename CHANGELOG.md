@@ -1,5 +1,8 @@
 # tf-manage
-### 4.5.0 (wip)
+### 4.5.1
+- [added] update readme and installer with instructions for linux (yum-based)
+
+### 4.5.0
 - [added] installer is now embedded in the same repository
 - [added] created [README.md](README.md), with usage demo recording
 
