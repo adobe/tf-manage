@@ -1,4 +1,8 @@
 # tf-manage
+### 4.5.0 (wip)
+- [added] installer is now embedded in the same repository
+- [added] created [README.md](README.md), with usage demo recording
+
 ### 4.4.1
 - [fix] "apply_tfplan" action now correctly runs "terraform apply"
 - [changed] used a different color for "operator" mode, to stand out from the wrapper argument value validations
