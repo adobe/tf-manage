@@ -24,7 +24,7 @@ tf_wrapper_repo='git@git.corp.adobe.com:mob-sre-tools/tf-manage.git'
 
 # gather input vars
 # set TF version
-version=${1:-0.11.1}
+version=${1:-0.11.8}
 
 # gather platform info
 unameOut="$(uname -s)"

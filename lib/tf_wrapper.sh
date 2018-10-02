@@ -82,8 +82,11 @@ __run_action_destroy() {
     # vars
     local var_file_path="${TF_VAR_FILE_PATH}"
 
+    # append extra arguments in case we're running in "unattended" mode
+    [ "${TF_EXEC_MODE}" = 'unattended' ] && local extra_tf_args=" -auto-approve"
+
     # build wrapper command
-    local _cmd="terraform ${_TF_ACTION} -var-file='${var_file_path}'"
+    local _cmd="terraform ${_TF_ACTION} -var-file='${var_file_path}'${extra_tf_args}"
     local _message="Executing $(__add_emphasis_red "terraform destroy")"
     local _extra_notice="This $(__add_emphasis_red 'will DESTROY') infrastructure resources."
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})

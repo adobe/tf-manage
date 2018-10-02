@@ -8,7 +8,7 @@ yum -y install wget sudo unzip git bash-completion which
 ```
 ### MacOS
 ```
-brew install coreutils  sudo unzip git bash-completion which coreutils
+brew install unzip git bash-completion gnu-which coreutils wget
 ```
 ## Installation
 ```bash

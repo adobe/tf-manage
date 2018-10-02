@@ -1,4 +1,12 @@
 # tf-manage
+### 4.5.3
+- [changed] the default Terraform version to install is now 0.11.8
+- [fix] Ffxed MacOS instructions
+- [fix] "unattended" mode now works for "terraform destroy" commands as well
+
+### 4.5.2
+- [added] MacOS requirement instructions
+
 ### 4.5.1
 - [added] update readme and installer with instructions for linux (yum-based)
 
