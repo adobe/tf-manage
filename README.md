@@ -1,6 +1,14 @@
 # tf-manage
 A simple Terraform wrapper for organising your code and workflow.
 
+## Advantages
+- organise your code
+- easy to re-use code (DRY)
+- separation (and isolation) of enviroments
+- team collaboration
+- auto-completion
+- reduced human error
+
 ## Requirements
 ### Linux
 ```bash
