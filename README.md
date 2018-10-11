@@ -20,7 +20,7 @@ git clone --recurse-submodules -j8 git@git.corp.adobe.com:mob-sre-tools/tf-manag
 ./tf-manage/bin/tf_install.sh
 
 # you can customize the version of terraform that is installed
-./tf-manage/bin/tf_install.sh 0.11.1
+./tf-manage/bin/tf_install.sh 0.11.8
 ```
 
 ## Examples
