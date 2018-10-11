@@ -2,12 +2,13 @@
 A simple Terraform wrapper for organising your code and workflow.
 
 ## Advantages
-- organise your code
+- structure your code logically
 - easy to re-use code (DRY)
 - separation (and isolation) of enviroments
 - team collaboration
 - auto-completion
 - reduced human error
+- easy onboarding
 
 ## Requirements
 ### Linux
