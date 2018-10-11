@@ -31,7 +31,7 @@ source "${ROOT_DIR}/../lib/import.sh"
 ### Input validation
 ###############################################################################
 function usage {
-    cmd="${BASH_SOURCE[0]##*/} <component> <module> <env> <vars> <action> [workspace]"
+    cmd="${BASH_SOURCE[0]##*/} <product> <repo> <module> <env> <component> <action> [workspace]"
     error "Usage: ${cmd}"
     exit -1
 }
