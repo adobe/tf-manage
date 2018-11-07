@@ -1,7 +1,10 @@
 # tf-manage
+### 4.5.4
+- [fix] Fixed HEREDOC errors that appear on Mac's running newer versions of bash
+
 ### 4.5.3
 - [changed] the default Terraform version to install is now 0.11.8
-- [fix] Ffxed MacOS instructions
+- [fix] Fixed MacOS instructions
 - [fix] "unattended" mode now works for "terraform destroy" commands as well
 
 ### 4.5.2

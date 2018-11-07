@@ -2,14 +2,17 @@ __search_path_not_found() {
     err_part1=$(decorate_error <<-HEREDOC
     Search path ${1} does not exist
     You must create it
-HEREDOC)
+HEREDOC
+)
 
 generate_snippet=$(cat <<-HEREDOC
 mkdir -p ${1}
-HEREDOC)
+HEREDOC
+)
 err_part2=$(decorate_error <<'HEREDOC'
     Then, try auto-complete again
-HEREDOC)
+HEREDOC
+)
 
     # echo -ne "${err}\n$generate_snippet"
     echo -ne "\n${err_part1}\n${generate_snippet}\n${err_part2}"
@@ -19,7 +22,8 @@ __search_path_is_empty() {
     err_part1=$(decorate_error <<-HEREDOC
     Search pattern ${1}/${2} is empty
     You must create entries first
-HEREDOC)
+HEREDOC
+)
 
     # echo -ne "${err}\n$generate_snippet"
     echo -ne "\n${err_part1}"
