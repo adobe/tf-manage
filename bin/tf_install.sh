@@ -17,7 +17,7 @@ function usage {
 install_dir='/opt/terraform'
 install_dir_wrapper='/opt/terraform/tf-manage'
 tf_config_path="${HOME}/.terraformrc"
-tf_wrapper_repo='git@git.corp.adobe.com:mob-sre-tools/tf-manage.git'
+tf_wrapper_repo=$(git --work-tree ${ROOT_DIR} remote get-url origin)
 
 # input validation
 [ "$#" -lt 0 ] || [ "$#" -ge 2 ] && usage
@@ -141,13 +141,13 @@ run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
 
 # install wrapper
 if [ -d ${install_dir_wrapper} ]; then
-    _message="Updating AEMM Terraform wrapper at ${install_dir_wrapper}"
-    _cmd="cd ${install_dir_wrapper} && git remote rm origin && git remote add origin ${tf_wrapper_repo} && git pull && git submodule init && git submodule update"
+    _message="Updating tf-manage terraform wrapper at ${install_dir_wrapper}"
+    _cmd="cd ${install_dir_wrapper} && git remote rm origin && git remote add origin ${tf_wrapper_repo} && git fetch && git checkout origin/master && git submodule init && git submodule update"
     _flags=(${_DEFAULT_CMD_FLAGS[@]})
     _flags[0]="strict"
     run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
 else
-    _message="Installing AEMM Terraform wrapper at ${install_dir_wrapper}"
+    _message="Installing tf-manage terraform wrapper at ${install_dir_wrapper}"
     _cmd="git clone --recursive ${tf_wrapper_repo} ${install_dir_wrapper}"
     _flags=(${_DEFAULT_CMD_FLAGS[@]})
     _flags[0]="strict"

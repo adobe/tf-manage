@@ -1,4 +1,8 @@
 # tf-manage
+### 4.6.0
+- [changed] removed hardcoded repo in the installer to allow support for custom forks
+- [changed] moved character for generated tf workspaces into a variable to easier customization
+
 ### 4.5.4
 - [fix] Fixed HEREDOC errors that appear on Mac's running newer versions of bash
 
