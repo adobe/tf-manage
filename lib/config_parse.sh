@@ -80,9 +80,11 @@ __compute_common_paths() {
     # selected per-environment module config tfplan file
     export TF_PLAN_FILE_PATH="${TF_MODULE_ENV_CONF_PATH}/${_VARS}.tfvars.tfplan"
 
+    _separator='.'
+
     ## generated values
     # auto-selected workspace name, composed from component, module, env and var-file name
-    export TF_WORKSPACE_GENERATED="${_PRODUCT}.${_COMPONENT}.${_MODULE}.${_ENV}.${_VARS}"
+    export TF_WORKSPACE_GENERATED="${_PRODUCT}${_separator}${_COMPONENT}${_separator}${_MODULE}${_separator}${_ENV}${_separator}${_VARS}"
 }
 
 __detect_env() {

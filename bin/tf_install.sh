@@ -142,7 +142,7 @@ run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
 # install wrapper
 if [ -d ${install_dir_wrapper} ]; then
     _message="Updating AEMM Terraform wrapper at ${install_dir_wrapper}"
-    _cmd="cd ${install_dir_wrapper} && git pull && git submodule init && git submodule update"
+    _cmd="cd ${install_dir_wrapper} && git remote rm origin && git remote add origin ${tf_wrapper_repo} && git pull && git submodule init && git submodule update"
     _flags=(${_DEFAULT_CMD_FLAGS[@]})
     _flags[0]="strict"
     run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
