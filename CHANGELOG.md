@@ -1,4 +1,10 @@
 # tf-manage
+
+## Changelog
+
+### 5.0.0
+- [breaking] the default Terraform version to install is now 0.12.24
+
 ### 4.6.0
 - [changed] removed hardcoded repo in the installer to allow support for custom forks
 - [changed] moved character for generated tf workspaces into a variable to easier customization
@@ -52,13 +58,12 @@
 ### 4.1.2
 - [fix] properly suggest products from current repo, instead of all allowed products
 
-## Changelog
 ### 4.1.1
 - [added] "ops" as allowed product until we can automatically rename workspaces with a helper script
 - [fix] environment folder checks now show correct paths to check in error message
 
 ### 4.1.0
-- [removed] "ops" no longer allowed product 
+- [removed] "ops" no longer allowed product
 - [added] "ROOT" is a new allowed product
     + not suggested by the completion script, but still valid
     + used to create the remote state "inception" stack (first_state)
@@ -142,7 +147,6 @@
 - [added] controller for wrapping terraform commands
 - [added] encouraging error message for failed terraform commands
 
-## Changelog
 ### 0.2.0
 - upgrade to bash-framework v0.3.0
 - [added] strict check that we're in a git repository (hopefully a terraform module one)

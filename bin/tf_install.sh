@@ -24,7 +24,7 @@ tf_wrapper_repo=$(git --work-tree ${ROOT_DIR} remote get-url origin)
 
 # gather input vars
 # set TF version
-version=${1:-0.11.8}
+version=${1:-0.12.24}
 
 # gather platform info
 unameOut="$(uname -s)"
