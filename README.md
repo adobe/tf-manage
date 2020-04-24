@@ -22,10 +22,10 @@ brew install unzip git bash-completion gnu-which coreutils wget
 ## Installation
 ```bash
 # clone this repo (directly with submodules)
-git clone --recurse-submodules -j8 git@git.corp.adobe.com:mob-sre-tools/tf-manage.git
+git clone --recurse-submodules -j8 git@git.corp.adobe.com:Target-ops/tf-manage.git
 
 # clone repo and get submodules in separate steps
-git clone git@git.corp.adobe.com:mob-sre-tools/tf-manage.git
+git clone git@git.corp.adobe.com:Target-ops/tf-manage.git
 git submodule init
 git submodule update
 
