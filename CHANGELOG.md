@@ -2,6 +2,11 @@
 
 ## Changelog
 
+### 5.1.0
+- [changed] now using TF_WORKSPACE instead of `terraform workspace select` command to choose workspaces
+  + this solves a concurrency issue when running the same module on different environments in parallel
+  + it also improves performance slightly because the CLI command was much slower
+
 ### 5.0.0
 - [breaking] the default Terraform version to install is now 0.12.24
 

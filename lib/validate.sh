@@ -177,6 +177,9 @@ __validate_tf_workspace() {
 
     ## Selecting workspace
     ## NOTE: Changing to the module directory is needed for local workspace support
-    _cmd="cd ${TF_MODULE_PATH} && terraform workspace select ${workspace} && cd -"
-    run_cmd_strict "${_cmd}" "Selecting workspace ${workspace_emph}" "Could not select workspace!"
+    export TF_WORKSPACE="${workspace}"
+    info "Selecting workspace ${workspace_emph}"
+
+    # _cmd="cd ${TF_MODULE_PATH} && terraform workspace select ${workspace} && cd -"
+    # run_cmd_strict "${_cmd}" "Selecting workspace ${workspace_emph}" "Could not select workspace!"
 }
