@@ -1,0 +1,26 @@
+resources:
+- name: tf-manage-code
+  type: git
+  source:
+    uri: git@git.corp.adobe.com:Target-ops/tf-manage.git
+    private_key: ((git-private-key))
+    branch: develop
+
+- name: tf-manage-docker-image
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-hub-username))/tf-manage
+
+jobs:
+- name: publish
+  public: true
+  serial: true
+  plan:
+  - get: tf-manage-code
+    trigger: true
+  - put: tf-manage-docker-image
+    params:
+      build: concourse/pipelines/docker
