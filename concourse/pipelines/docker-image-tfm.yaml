@@ -44,5 +44,5 @@ jobs:
   - get: tf-manage-code
     trigger: true
   - put: tf-manage-docker-image
-    # params:
-    #   build: tf-manage-code
+    params:
+      build: tf-manage-code
