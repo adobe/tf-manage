@@ -37,7 +37,7 @@ git submodule update
 ./tf-manage/bin/tf_install.sh
 
 # you can customize the version of terraform that is installed
-./tf-manage/bin/tf_install.sh 0.12.24
+./tf-manage/bin/tf_install.sh 0.13.0
 ```
 
 ## Examples
