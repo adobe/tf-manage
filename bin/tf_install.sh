@@ -17,14 +17,14 @@ function usage {
 install_dir='/opt/terraform'
 install_dir_wrapper='/opt/terraform/tf-manage'
 tf_config_path="${HOME}/.terraformrc"
-tf_wrapper_repo=$(git --work-tree ${ROOT_DIR} remote get-url origin)
+tf_wrapper_repo=$(git --git-dir=${ROOT_DIR}/.git remote get-url origin)
 
 # input validation
 [ "$#" -lt 0 ] || [ "$#" -ge 2 ] && usage
 
 # gather input vars
 # set TF version
-version=${1:-0.12.24}
+version=${1:-0.13.5}
 
 # gather platform info
 unameOut="$(uname -s)"
