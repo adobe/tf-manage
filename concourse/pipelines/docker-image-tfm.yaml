@@ -3,16 +3,15 @@ resources:
   type: git
   source:
     uri: git@git.corp.adobe.com:Target-ops/tf-manage.git
-    private_key: ((git-private-key))
+    private_key: ((/UI/infrastructure/generic_users/tgtuibot.data.tgtuibot-gitcorp-ssh-key))
     branch: develop
 
 - name: tf-manage-docker-image
   type: docker-image
   source:
-    email: ((docker-hub-email))
-    username: ((docker-hub-username))
-    password: ((docker-hub-password))
-    repository: ((docker-hub-username))/tf-manage
+    username: tgtuibot
+    password: ((/UI/infrastructure/generic_users/tgtuibot.data.artifactory_api_key))
+    repository: docker-tf-manage-release.dr-uw2.adobeitc.com/tf-manage
 
 jobs:
 - name: debug
@@ -35,7 +34,8 @@ jobs:
         args:
         - -c
         - |
-          apk add tree && tree -L 3 tf-manage-code
+          apk add tree &&
+          tree -L 3 tf-manage-code
 
 - name: publish
   public: true
