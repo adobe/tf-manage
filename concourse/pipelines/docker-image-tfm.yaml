@@ -26,15 +26,6 @@ resources:
     password: ((/UI/infrastructure/generic_users/tgtuibot.data.artifactory_api_key))
     repository: docker-tf-manage-release.dr-uw2.adobeitc.com/tf-manage
 
-groups:
-- name: ci
-  jobs:
-  - set-pipeline
-- name: docker
-  jobs:
-  - publish
-  - validate
-
 jobs:
 - name: set-pipeline
   public: true
