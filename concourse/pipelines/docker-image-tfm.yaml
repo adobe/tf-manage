@@ -1,13 +1,24 @@
 resources:
-- name: tf-manage-code
+- name: tfm-code
   type: git
   icon: github
   source:
     uri: git@git.corp.adobe.com:Target-ops/tf-manage.git
     private_key: ((/UI/infrastructure/generic_users/tgtuibot.data.tgtuibot-gitcorp-ssh-key))
     branch: develop
+    ignore_paths: [concourse/]
 
-- name: tf-manage-docker-image
+- name: tfm-pipeline
+  type: git
+  icon: github
+  source:
+    uri: git@git.corp.adobe.com:Target-ops/tf-manage.git
+    private_key: ((/UI/infrastructure/generic_users/tgtuibot.data.tgtuibot-gitcorp-ssh-key))
+    branch: develop
+    paths: [concourse/]
+
+
+- name: tfm-docker-image
   icon: docker
   type: docker-image
   source:
@@ -15,24 +26,45 @@ resources:
     password: ((/UI/infrastructure/generic_users/tgtuibot.data.artifactory_api_key))
     repository: docker-tf-manage-release.dr-uw2.adobeitc.com/tf-manage
 
+groups:
+- name: ci
+  jobs:
+  - set-pipeline
+- name: docker
+  jobs:
+  - publish
+  - validate
+
 jobs:
+- name: set-pipeline
+  public: true
+  serial: true
+  plan:
+    - get: tfm-pipeline
+      params:
+        submodules: none
+      trigger: true
+    - set_pipeline: build-docker-image
+      file: tfm-pipeline/concourse/pipelines/docker-image-tfm.yaml
+
 - name: publish
   public: true
   serial: true
   plan:
-  - get: tf-manage-code
+  - get: tfm-code
     trigger: true
-  - put: tf-manage-docker-image
+  - put: tfm-docker-image
     params:
-      build: tf-manage-code
+      build: tfm-code
 
 - name: validate
   serial: true
   public: true
   plan:
-  - get: tf-manage-docker-image
+  - get: tfm-code
     trigger: true
-  - task: print-stuff
+    passed: [publish]
+  - task: print-contents
     config:
       platform: linux
       image_resource:
