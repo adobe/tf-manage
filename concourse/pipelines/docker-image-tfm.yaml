@@ -44,7 +44,6 @@ jobs:
   plan:
   - get: tfm-code
     trigger: true
-    passed: [reconfigure-self]
   - put: tfm-docker-image
     params:
       build: tfm-code
@@ -55,7 +54,7 @@ jobs:
   plan:
   - get: tfm-code
     trigger: true
-    passed: [reconfigure-self, publish]
+    passed: [publish]
   - task: print-contents
     config:
       platform: linux
