@@ -27,7 +27,7 @@ resources:
     repository: docker-tf-manage-release.dr-uw2.adobeitc.com/tf-manage
 
 jobs:
-- name: set-pipeline
+- name: reconfigure-self
   public: true
   serial: true
   plan:
