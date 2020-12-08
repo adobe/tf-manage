@@ -1,12 +1,14 @@
 resources:
 - name: tf-manage-code
   type: git
+  icon: github
   source:
     uri: git@git.corp.adobe.com:Target-ops/tf-manage.git
     private_key: ((/UI/infrastructure/generic_users/tgtuibot.data.tgtuibot-gitcorp-ssh-key))
     branch: develop
 
 - name: tf-manage-docker-image
+  icon: docker
   type: docker-image
   source:
     username: tgtuibot
@@ -14,29 +16,6 @@ resources:
     repository: docker-tf-manage-release.dr-uw2.adobeitc.com/tf-manage
 
 jobs:
-- name: debug
-  public: true
-  plan:
-  - get: tf-manage-code
-    params:
-      submodules: none
-    trigger: true
-  - task: print-stuff
-    config:
-      inputs:
-      - name: tf-manage-code
-      platform: linux
-      image_resource:
-        type: docker-image
-        source: {repository: alpine}
-      run:
-        path: sh
-        args:
-        - -c
-        - |
-          apk add tree &&
-          tree -L 3 tf-manage-code
-
 - name: publish
   public: true
   serial: true
@@ -46,3 +25,26 @@ jobs:
   - put: tf-manage-docker-image
     params:
       build: tf-manage-code
+
+- name: validate
+  serial: true
+  public: true
+  plan:
+  - get: tf-manage-docker-image
+    trigger: true
+  - task: print-stuff
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          username: tgtuibot
+          password: ((/UI/infrastructure/generic_users/tgtuibot.data.artifactory_api_key))
+          repository: docker-tf-manage-release.dr-uw2.adobeitc.com/tf-manage
+      run:
+        path: sh
+        args:
+        - -c
+        - |
+          yum -y install tree &&
+          tree -L 3 /opt
