@@ -69,5 +69,4 @@ jobs:
         args:
         - -c
         - |
-          yum -y install tree &&
           tree -L 3 /opt
