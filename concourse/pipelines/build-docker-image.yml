@@ -36,7 +36,7 @@ jobs:
         submodules: none
       trigger: true
     - set_pipeline: build-docker-image
-      file: tfm-pipeline/concourse/pipelines/docker-image-tfm.yaml
+      file: tfm-pipeline/concourse/pipelines/build-docker-image.yml
 
 - name: publish
   public: true
