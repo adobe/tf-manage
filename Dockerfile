@@ -1,6 +1,6 @@
-FROM centos:8
+FROM alpine:3
 
-RUN yum -y install wget sudo unzip git bash-completion which
+RUN apk add --no-cache --no-progress wget sudo unzip git bash bash-doc bash-completion which vim
 
 RUN echo "alias ll='ls -la'" >> /root/.bashrc
 RUN mkdir -p /root/.ssh && chown 700 /root/.ssh
@@ -9,6 +9,12 @@ RUN echo 'git.corp.adobe.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTY
 WORKDIR /opt/tf-manage
 COPY ./ ./
 
+# alpine fixes
+ENV USER=root
+RUN mkdir /etc/bash_completion.d/
+
+# run installer
 RUN /opt/tf-manage/bin/tf_install.sh
+RUN echo "source /etc/bash_completion.d/tf" >> /root/.bashrc
 
 WORKDIR /
