@@ -12,6 +12,7 @@ COPY ./ ./
 # alpine fixes
 ENV USER=root
 RUN mkdir /etc/bash_completion.d/
+RUN mkdir -p /root/.terraform.d/plugin-cache
 
 # run installer
 RUN /opt/tf-manage/bin/tf_install.sh
