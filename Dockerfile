@@ -1,6 +1,6 @@
 FROM alpine:3
 
-RUN apk add --no-cache --no-progress wget sudo unzip git bash bash-doc bash-completion which vim tree
+RUN apk add --no-cache --no-progress wget sudo unzip git bash bash-doc bash-completion which vim tree curl aws-cli
 
 RUN echo "alias ll='ls -la'" >> /root/.bashrc
 RUN mkdir -p /root/.ssh && chown 700 /root/.ssh
