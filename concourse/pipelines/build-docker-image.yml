@@ -27,10 +27,13 @@ jobs:
   public: true
   serial: true
   plan:
-    - get: repo-code
-      params:
-        submodules: none
-      trigger: true
+    - in_parallel:
+      - get: alpine-docker-image
+        trigger: true
+      - get: repo-code
+        params:
+          submodules: none
+        trigger: true
     - set_pipeline: build-docker-image
       file: repo-code/concourse/pipelines/build-docker-image.yml
 
