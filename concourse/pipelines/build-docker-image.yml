@@ -17,6 +17,12 @@ resources:
     branch: develop
     paths: [concourse/]
 
+- name: alpine-docker-image
+  icon: docker
+  type: docker-image
+  source:
+    repository: alpine
+    tag: 3
 
 - name: tfm-docker-image
   icon: docker
@@ -42,6 +48,8 @@ jobs:
   public: true
   serial: true
   plan:
+  - get: alpine-docker-image
+    trigger: true
   - get: tfm-code
     trigger: true
   - put: tfm-docker-image
