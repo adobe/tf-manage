@@ -1,21 +1,11 @@
 resources:
-- name: tfm-code
+- name: repo-code
   type: git
   icon: github
   source:
     uri: git@git.corp.adobe.com:Target-ops/tf-manage.git
     private_key: ((/UI/infrastructure/generic_users/tgtuibot.data.tgtuibot-gitcorp-ssh-key))
     branch: develop
-    ignore_paths: [concourse/]
-
-- name: tfm-pipeline
-  type: git
-  icon: github
-  source:
-    uri: git@git.corp.adobe.com:Target-ops/tf-manage.git
-    private_key: ((/UI/infrastructure/generic_users/tgtuibot.data.tgtuibot-gitcorp-ssh-key))
-    branch: develop
-    paths: [concourse/]
 
 - name: alpine-docker-image
   icon: docker
@@ -37,30 +27,33 @@ jobs:
   public: true
   serial: true
   plan:
-    - get: tfm-pipeline
+    - get: repo-code
       params:
         submodules: none
       trigger: true
     - set_pipeline: build-docker-image
-      file: tfm-pipeline/concourse/pipelines/build-docker-image.yml
+      file: repo-code/concourse/pipelines/build-docker-image.yml
 
 - name: publish
   public: true
   serial: true
   plan:
-  - get: alpine-docker-image
-    trigger: true
-  - get: tfm-code
-    trigger: true
+  - in_parallel:
+    - get: alpine-docker-image
+      passed: [reconfigure-self]
+      trigger: true
+    - get: repo-code
+      passed: [reconfigure-self]
+      trigger: true
   - put: tfm-docker-image
     params:
-      build: tfm-code
+      build: repo-code
 
 - name: validate
   serial: true
   public: true
   plan:
-  - get: tfm-code
+  - get: repo-code
     trigger: true
     passed: [publish]
   - task: print-contents
