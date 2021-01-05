@@ -1,0 +1,76 @@
+resources:
+- name: repo-code
+  type: git
+  icon: github
+  source:
+    uri: git@git.corp.adobe.com:Target-ops/tf-manage.git
+    private_key: ((/UI/infrastructure/generic_users/tgtuibot.data.tgtuibot-gitcorp-ssh-key))
+    branch: develop
+
+- name: alpine-docker-image
+  icon: docker
+  type: docker-image
+  source:
+    repository: alpine
+    tag: 3
+
+- name: tfm-docker-image
+  icon: docker
+  type: docker-image
+  source:
+    username: tgtuibot
+    password: ((/UI/infrastructure/generic_users/tgtuibot.data.artifactory_api_key))
+    repository: docker-tf-manage-release.dr-uw2.adobeitc.com/tf-manage
+
+jobs:
+- name: reconfigure-self
+  public: true
+  serial: true
+  plan:
+    - in_parallel:
+      - get: alpine-docker-image
+        trigger: true
+      - get: repo-code
+        params:
+          submodules: none
+        trigger: true
+    - set_pipeline: build-docker-image
+      file: repo-code/concourse/pipelines/build-docker-image.yml
+
+- name: publish
+  public: true
+  serial: true
+  plan:
+  - in_parallel:
+    - get: alpine-docker-image
+      passed: [reconfigure-self]
+      trigger: true
+    - get: repo-code
+      passed: [reconfigure-self]
+      trigger: true
+  - put: tfm-docker-image
+    params:
+      build: repo-code
+
+- name: validate
+  serial: true
+  public: true
+  plan:
+  - get: repo-code
+    trigger: true
+    passed: [publish]
+  - task: print-contents
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          username: tgtuibot
+          password: ((/UI/infrastructure/generic_users/tgtuibot.data.artifactory_api_key))
+          repository: docker-tf-manage-release.dr-uw2.adobeitc.com/tf-manage
+      run:
+        path: sh
+        args:
+        - -c
+        - |
+          tree -L 3 /opt

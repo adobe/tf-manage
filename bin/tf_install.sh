@@ -140,19 +140,11 @@ _flags[6]="no_print_outcome"
 run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
 
 # install wrapper
-if [ -d ${install_dir_wrapper} ]; then
-    _message="Updating tf-manage terraform wrapper at ${install_dir_wrapper}"
-    _cmd="cd ${install_dir_wrapper} && git remote rm origin && git remote add origin ${tf_wrapper_repo} && git fetch && git checkout origin/master && git submodule init && git submodule update"
-    _flags=(${_DEFAULT_CMD_FLAGS[@]})
-    _flags[0]="strict"
-    run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
-else
-    _message="Installing tf-manage terraform wrapper at ${install_dir_wrapper}"
-    _cmd="git clone --recursive ${tf_wrapper_repo} ${install_dir_wrapper}"
-    _flags=(${_DEFAULT_CMD_FLAGS[@]})
-    _flags[0]="strict"
-    run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
-fi
+_message="Installing tf-manage terraform wrapper at ${install_dir_wrapper}"
+_cmd="cp -a ${ROOT_DIR} ${install_dir_wrapper}"
+_flags=(${_DEFAULT_CMD_FLAGS[@]})
+_flags[0]="strict"
+run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
 
 # add wrapper to PATH
 _message="Adding tf wrapper to PATH"
