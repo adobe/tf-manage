@@ -55,7 +55,7 @@ run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
 
 # Download release
 _message="Downloading terraform archive..."
-_cmd="wget -qO ${download_path} ${package_url}"
+_cmd="wget -O ${download_path} ${package_url}"
 _flags=(${_DEFAULT_CMD_FLAGS[@]})
 _flags[0]="strict"
 run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
@@ -141,7 +141,7 @@ run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
 
 # install wrapper
 _message="Installing tf-manage terraform wrapper at ${install_dir_wrapper}"
-_cmd="cp -a ${ROOT_DIR} ${install_dir_wrapper}"
+_cmd="sudo cp -a ${ROOT_DIR}/ ${install_dir_wrapper}/ && sudo chown -R ${USER}: ${install_dir_wrapper}/"
 _flags=(${_DEFAULT_CMD_FLAGS[@]})
 _flags[0]="strict"
 run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
