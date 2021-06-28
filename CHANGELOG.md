@@ -1,6 +1,15 @@
 # tf-manage
 
 ## Changelog
+### 5.2.0
+- [changed] optimized tf_install by caching the download archive
+- [added] added tf_install to path, for easy switching of Terraform versions
+
+### 5.1.2
+- [changed] fixed permissions error on mac when installing tf_wrapper
+
+### 5.1.1
+- [changed] fixed logic for obtaining wrapper repo
 
 ### 5.1.0
 - [changed] now using TF_WORKSPACE instead of `terraform workspace select` command to choose workspaces

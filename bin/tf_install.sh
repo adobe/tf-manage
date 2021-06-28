@@ -1,7 +1,26 @@
 #!/bin/bash
 
+### Platform check
+###############################################################################
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
+
+### Binary set
+###############################################################################
+case "${machine}" in
+    Linux*)     BIN_READLINK="readlink";;
+    Mac*)       BIN_READLINK="greadlink";;
+    *)          BIN_READLINK="readlink";;
+esac
+
+### Framework boilerplate
+###############################################################################
 # calculate script root dir
-export ROOT_DIR=$(cd ${BASH_SOURCE[0]%/*}/.. && pwd -P)
+export ROOT_DIR="$( dirname $(${BIN_READLINK} -f ${BASH_SOURCE[0]}) )/.."
 
 # import bash framework
 source "${ROOT_DIR}/vendor/bash-framework/lib/import.sh"
@@ -16,6 +35,7 @@ function usage {
 # generic folder logic
 install_dir='/opt/terraform'
 install_dir_wrapper='/opt/terraform/tf-manage'
+install_dir_wrapper_tmp='/tmp/tf-manage-installer'
 tf_config_path="${HOME}/.terraformrc"
 tf_wrapper_repo=$(git --git-dir=${ROOT_DIR}/.git remote get-url origin)
 
@@ -53,12 +73,23 @@ _flags=(${_DEFAULT_CMD_FLAGS[@]})
 _flags[5]="no_print_status"
 run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
 
-# Download release
-_message="Downloading terraform archive..."
-_cmd="wget -O ${download_path} ${package_url}"
+# Check release download cache
+_message="Checking download cache..."
+_cmd="test -f ${download_path}"
 _flags=(${_DEFAULT_CMD_FLAGS[@]})
-_flags[0]="strict"
+_flags[4]="no_print_message"
+_flags[6]="no_print_outcome"
 run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
+result=$?
+
+# Download release, if not present already
+if [ "${result}" -ne 0 ]; then
+    _message="Downloading terraform archive..."
+    _cmd="wget -O ${download_path} ${package_url}"
+    _flags=(${_DEFAULT_CMD_FLAGS[@]})
+    _flags[0]="strict"
+    run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
+fi
 
 # prepare install dir
 _message="Preparing install dir ${install_dir}"
@@ -135,20 +166,40 @@ _message="Checking installation by printing the version"
 _cmd="terraform version"
 _flags=(${_DEFAULT_CMD_FLAGS[@]})
 _flags[0]="strict"
+# _flags[4]="no_print_message"
+_flags[6]="no_print_outcome"
+run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
+
+# prepare wrapper
+_message="Preparing tf-manage terraform wrapper installer at ${install_dir_wrapper_tmp}"
+_cmd="sudo cp -a ${ROOT_DIR}/ ${install_dir_wrapper_tmp}/ && sudo chown -R ${USER}: ${install_dir_wrapper_tmp}/"
+_flags=(${_DEFAULT_CMD_FLAGS[@]})
+_flags[0]="strict"
 _flags[4]="no_print_message"
 _flags[6]="no_print_outcome"
 run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
 
 # install wrapper
 _message="Installing tf-manage terraform wrapper at ${install_dir_wrapper}"
-_cmd="sudo cp -a ${ROOT_DIR}/ ${install_dir_wrapper}/ && sudo chown -R ${USER}: ${install_dir_wrapper}/"
+_cmd="sudo cp -a ${install_dir_wrapper_tmp}/ ${install_dir_wrapper}/ && sudo chown -R ${USER}: ${install_dir_wrapper}/"
 _flags=(${_DEFAULT_CMD_FLAGS[@]})
 _flags[0]="strict"
+_flags[4]="no_print_message"
+_flags[6]="no_print_outcome"
 run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
 
 # add wrapper to PATH
 _message="Adding tf wrapper to PATH"
 _cmd="sudo ln -s -f ${install_dir_wrapper}/bin/tf.sh /usr/local/bin/tf"
+_flags=(${_DEFAULT_CMD_FLAGS[@]})
+_flags[0]="strict"
+_flags[4]="no_print_message"
+_flags[6]="no_print_outcome"
+run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
+
+# add wrapper installer to PATH
+_message="Adding tf wrapper installer to PATH"
+_cmd="sudo ln -s -f ${install_dir_wrapper}/bin/tf_install.sh /usr/local/bin/tf_install"
 _flags=(${_DEFAULT_CMD_FLAGS[@]})
 _flags[0]="strict"
 _flags[4]="no_print_message"
