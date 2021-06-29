@@ -32,19 +32,20 @@ function usage {
 }
 
 ## -- Setup
+# gather input vars
+# set TF version
+version=${1:-1.0.1}
+
 # generic folder logic
 install_dir='/opt/terraform'
 install_dir_wrapper='/opt/terraform/tf-manage'
 install_dir_wrapper_tmp='/tmp/tf-manage-installer'
+plugin_cache_dir="$HOME/.terraform.d/${version}/plugin-cache"
 tf_config_path="${HOME}/.terraformrc"
 tf_wrapper_repo=$(git --git-dir=${ROOT_DIR}/.git remote get-url origin)
 
 # input validation
 [ "$#" -lt 0 ] || [ "$#" -ge 2 ] && usage
-
-# gather input vars
-# set TF version
-version=${1:-0.13.5}
 
 # gather platform info
 unameOut="$(uname -s)"
@@ -70,6 +71,7 @@ info "This will install/upgrade Terraform to version ${version}"
 _message="Sudo credentials are required. Please insert your password below:"
 _cmd="sudo echo \"Thank you! Continuing installation...\""
 _flags=(${_DEFAULT_CMD_FLAGS[@]})
+_flags[0]="strict"
 _flags[5]="no_print_status"
 run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
 
@@ -109,6 +111,8 @@ _message="Extracting binary from downloaded archive"
 _cmd="sudo unzip -qo ${download_path}"
 _flags=(${_DEFAULT_CMD_FLAGS[@]})
 _flags[0]="strict"
+_flags[4]="no_print_message"
+_flags[6]="no_print_outcome"
 run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
 
 # rename and link current version
@@ -154,7 +158,16 @@ run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
 
 # install terraform config
 _message="Installing default TF configuration at ${tf_config_path}"
-_cmd="echo 'plugin_cache_dir   = \"$HOME/.terraform.d/plugin-cache\"' > ${tf_config_path}"
+_cmd="echo 'plugin_cache_dir   = \"${plugin_cache_dir}\"' > ${tf_config_path}"
+_flags=(${_DEFAULT_CMD_FLAGS[@]})
+_flags[0]="strict"
+_flags[4]="no_print_message"
+_flags[6]="no_print_outcome"
+run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
+
+# setup terraform plugin cache directory
+_message="Preparing TF plugin cache directory at ${plugin_cache_dir}"
+_cmd="mkdir -p ${plugin_cache_dir}"
 _flags=(${_DEFAULT_CMD_FLAGS[@]})
 _flags[0]="strict"
 _flags[4]="no_print_message"
@@ -166,7 +179,6 @@ _message="Checking installation by printing the version"
 _cmd="terraform version"
 _flags=(${_DEFAULT_CMD_FLAGS[@]})
 _flags[0]="strict"
-# _flags[4]="no_print_message"
 _flags[6]="no_print_outcome"
 run_cmd "${_cmd}" "${_message}" "${_flags[@]}"
 

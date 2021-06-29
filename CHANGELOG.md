@@ -1,6 +1,9 @@
 # tf-manage
 
 ## Changelog
+### 5.3.0
+- [changed] plugin_cache_dir is now setup in different folder per Terraform version (to avoid using incompatible caches when switching TF versions)
+
 ### 5.2.0
 - [changed] optimized tf_install by caching the download archive
 - [added] added tf_install to path, for easy switching of Terraform versions
