@@ -45,7 +45,11 @@ _COMPONENT=${2}
 _MODULE=${3}
 _ENV=${4}
 _VARS=${5}
-_TF_ACTION=${6}
+action_raw="${6}"
+action="${action_raw%% *}"
+action_flags="${action_raw//$action}"
+_TF_ACTION=${action}
+_TF_ACTION_FLAGS=${action_flags:-}
 _WORKSPACE_OVERRIDE=${7:-workspace=}
 
 ### Load configuration

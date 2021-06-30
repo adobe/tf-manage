@@ -1,6 +1,11 @@
 # tf-manage
 
 ## Changelog
+### 5.4.0
+- [changed] you can now pass additional flags/args to terraform actions by quoting the action and appending additional flags/args (example: `tf <project> <repo> <module> <env> <component> 'output -json'`)
+- [added] the above change allows us to run commands like `terraform state` within the wrapper.
+  - `show`, `state`, `providers` were allowlisted for the wrapper.
+
 ### 5.3.0
 - [changed] plugin_cache_dir is now setup in different folder per Terraform version (to avoid using incompatible caches when switching TF versions)
 

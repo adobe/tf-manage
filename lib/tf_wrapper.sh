@@ -10,7 +10,7 @@ __run_action_plan() {
     local plan_file_path="${TF_PLAN_FILE_PATH}"
 
     # build wrapper command
-    local _cmd="terraform ${_TF_ACTION} -var-file='${var_file_path}' -out ${plan_file_path}"
+    local _cmd="terraform ${_TF_ACTION} -var-file='${var_file_path}' -out ${plan_file_path} ${_TF_ACTION_FLAGS}"
     local _message="Executing $(__add_emphasis_magenta "terraform plan")"
     local _extra_notice="This $(__add_emphasis_green 'will not') affect infrastructure resources."
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
@@ -35,7 +35,7 @@ __run_action_apply_tfplan() {
     local plan_file_path="${TF_PLAN_FILE_PATH}"
 
     # build wrapper command
-    local _cmd="terraform apply ${plan_file_path}"
+    local _cmd="terraform apply ${plan_file_path} ${_TF_ACTION_FLAGS}"
     local _message="Executing $(__add_emphasis_red "terraform apply")"
     local _extra_notice="This $(__add_emphasis_red 'will') affect infrastructure resources."
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
@@ -60,7 +60,7 @@ __run_action_apply() {
     [ "${TF_EXEC_MODE}" = 'unattended' ] && local extra_tf_args=" -input=false -auto-approve"
 
     # build wrapper command
-    local _cmd="terraform apply -var-file='${var_file_path}'${extra_tf_args}"
+    local _cmd="terraform apply -var-file='${var_file_path}'${extra_tf_args} ${_TF_ACTION_FLAGS}"
     local _message="Executing $(__add_emphasis_red "terraform apply")"
     local _extra_notice="This $(__add_emphasis_red 'will') affect infrastructure resources."
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
@@ -86,7 +86,7 @@ __run_action_destroy() {
     [ "${TF_EXEC_MODE}" = 'unattended' ] && local extra_tf_args=" -auto-approve"
 
     # build wrapper command
-    local _cmd="terraform ${_TF_ACTION} -var-file='${var_file_path}'${extra_tf_args}"
+    local _cmd="terraform ${_TF_ACTION} -var-file='${var_file_path}'${extra_tf_args} ${_TF_ACTION_FLAGS}"
     local _message="Executing $(__add_emphasis_red "terraform destroy")"
     local _extra_notice="This $(__add_emphasis_red 'will DESTROY') infrastructure resources."
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
@@ -106,7 +106,7 @@ __run_action_get() {
     debug "Entered ${FUNCNAME}"
 
     # build wrapper command
-    local _cmd="terraform ${_TF_ACTION}"
+    local _cmd="terraform ${_TF_ACTION} ${_TF_ACTION_FLAGS}"
     local _message="Executing $(__add_emphasis_green "terraform get")"
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
     _flags[0]='strict'
@@ -119,8 +119,47 @@ __run_action_output() {
     debug "Entered ${FUNCNAME}"
 
     # build wrapper command
-    local _cmd="terraform ${_TF_ACTION}"
+    local _cmd="terraform ${_TF_ACTION} ${_TF_ACTION_FLAGS}"
     local _message="Executing $(__add_emphasis_green "terraform output")"
+    local _flags=(${_DEFAULT_CMD_FLAGS[@]})
+    _flags[0]='strict'
+
+    # execute
+    run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
+}
+
+__run_action_show() {
+    debug "Entered ${FUNCNAME}"
+
+    # build wrapper command
+    local _cmd="terraform ${_TF_ACTION} ${_TF_ACTION_FLAGS}"
+    local _message="Executing $(__add_emphasis_green "terraform show")"
+    local _flags=(${_DEFAULT_CMD_FLAGS[@]})
+    _flags[0]='strict'
+
+    # execute
+    run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
+}
+
+__run_action_state() {
+    debug "Entered ${FUNCNAME}"
+
+    # build wrapper command
+    local _cmd="terraform ${_TF_ACTION} ${_TF_ACTION_FLAGS}"
+    local _message="Executing $(__add_emphasis_green "terraform state")"
+    local _flags=(${_DEFAULT_CMD_FLAGS[@]})
+    _flags[0]='strict'
+
+    # execute
+    run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
+}
+
+__run_action_providers() {
+    debug "Entered ${FUNCNAME}"
+
+    # build wrapper command
+    local _cmd="terraform ${_TF_ACTION} ${_TF_ACTION_FLAGS}"
+    local _message="Executing $(__add_emphasis_green "terraform ${_TF_ACTION}")"
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
     _flags[0]='strict'
 
@@ -132,7 +171,7 @@ __run_action_init() {
     debug "Entered ${FUNCNAME}"
 
     # build wrapper command
-    local _cmd="terraform ${_TF_ACTION}"
+    local _cmd="terraform ${_TF_ACTION} ${_TF_ACTION_FLAGS}"
     local _message="Executing $(__add_emphasis_green "terraform init")"
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
     _flags[0]='strict'
@@ -148,7 +187,7 @@ __run_action_refresh() {
     local var_file_path="${TF_VAR_FILE_PATH}"
 
     # build wrapper command
-    local _cmd="terraform ${_TF_ACTION} -var-file='${var_file_path}'"
+    local _cmd="terraform ${_TF_ACTION} -var-file='${var_file_path}' ${_TF_ACTION_FLAGS}"
     local _message="Executing $(__add_emphasis_green "terraform refresh")"
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
     _flags[0]='strict'
@@ -161,7 +200,7 @@ __run_action_fmt() {
     debug "Entered ${FUNCNAME}"
 
     # build wrapper command
-    local _cmd="terraform fmt"
+    local _cmd="terraform fmt ${_TF_ACTION_FLAGS}"
     local _message="Executing $(__add_emphasis_green "terraform fmt")"
     local _flags=(${_DEFAULT_CMD_FLAGS[@]})
     _flags[0]='strict'
