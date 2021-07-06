@@ -13,12 +13,14 @@ resources:
   source:
     repository: alpine
     tag: 3
+    username: ((/UI/infrastructure/generic_users/tgtuibot.user))
+    password: ((/UI/infrastructure/generic_users/tgtuibot.docker_id_access_token))
 
 - name: tfm-docker-image
   icon: docker
   type: docker-image
   source:
-    username: tgtuibot
+    username: ((/UI/infrastructure/generic_users/tgtuibot.user))
     password: ((/UI/infrastructure/generic_users/tgtuibot.artifactory_uw2_api_key))
     repository: docker-tf-manage-release.dr-uw2.adobeitc.com/tf-manage
 
