@@ -21,11 +21,11 @@ brew install unzip git bash-completion gnu-which coreutils wget
 ```
 ## Installation
 ```bash
-# clone this repo (directly with submodules)
-git clone --recurse-submodules -j8 git@git.corp.adobe.com:Target-ops/tf-manage.git
-
-# clone repo and get submodules in separate steps
+# clone repo and
 git clone git@git.corp.adobe.com:Target-ops/tf-manage.git
+cd tf-manage
+
+# get submodules in separate steps
 git submodule init
 git submodule update
 
@@ -34,10 +34,10 @@ git submodule update
 # - terraform itself
 # - the tf wrapper
 # - and bash completion for the wrapper
-./tf-manage/bin/tf_install.sh
+./bin/tf_install.sh
 
 # you can customize the version of terraform that is installed
-./tf-manage/bin/tf_install.sh 0.13.0
+./bin/tf_install.sh 1.0.1
 ```
 
 ## Examples
