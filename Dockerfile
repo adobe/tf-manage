@@ -1,4 +1,4 @@
-FROM alpine:3
+FROM docker-asr-release.dr.corp.adobe.com/behance/docker-base:3-alpine
 
 RUN apk add --no-cache --no-progress wget sudo unzip git bash bash-doc bash-completion which vim tree curl aws-cli jq openssh
 
