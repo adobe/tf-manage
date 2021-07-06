@@ -11,10 +11,10 @@ resources:
   icon: docker
   type: docker-image
   source:
-    repository: alpine
-    tag: 3
+    repository: docker-asr-release.dr.corp.adobe.com/behance/docker-base
+    tag: 3-alpine
     username: ((/UI/infrastructure/generic_users/tgtuibot.user))
-    password: ((/UI/infrastructure/generic_users/tgtuibot.docker_id_access_token))
+    password: ((/UI/infrastructure/generic_users/tgtuibot.artifactory_corp_api_key))
 
 - name: tfm-docker-image
   icon: docker
