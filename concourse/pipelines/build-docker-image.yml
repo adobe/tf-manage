@@ -25,30 +25,14 @@ resources:
     repository: docker-tf-manage-release.dr-uw2.adobeitc.com/tf-manage
 
 jobs:
-- name: reconfigure-self
-  public: true
-  serial: true
-  plan:
-    - in_parallel:
-      - get: alpine-docker-image
-        trigger: true
-      - get: repo-code
-        params:
-          submodules: none
-        trigger: true
-    - set_pipeline: build-docker-image
-      file: repo-code/concourse/pipelines/build-docker-image.yml
-
 - name: publish
   public: true
   serial: true
   plan:
   - in_parallel:
     - get: alpine-docker-image
-      passed: [reconfigure-self]
       trigger: true
     - get: repo-code
-      passed: [reconfigure-self]
       trigger: true
   - put: tfm-docker-image
     params:
@@ -75,4 +59,6 @@ jobs:
         args:
         - -c
         - |
-          tree -L 3 /opt
+          tree -L 3 /opt/terraform
+          tf
+          terraform version

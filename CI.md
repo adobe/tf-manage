@@ -2,7 +2,7 @@
 ```bash
 # choose concourse instance
 export CONTEXT='mac';  export ENDPOINT='http://localhost'
-export CONTEXT='prod'; export ENDPOINT='http://target-concourse.ci.corp.adobe.com'
+export CONTEXT='prod'; export ENDPOINT='http://target-concourse.ci.corp.adobe.com:443'
 
 # choose acting team
 export TEAM='main'
