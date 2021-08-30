@@ -1,6 +1,9 @@
 # tf-manage
 
 ## Changelog
+### 5.5.0
+- [added] support for `taint`, `untaint` terraform commands
+
 ### 5.4.0
 - [changed] you can now pass additional flags/args to terraform actions by quoting the action and appending additional flags/args (example: `tf <project> <repo> <module> <env> <component> 'output -json'`)
 - [added] the above change allows us to run commands like `terraform state` within the wrapper.

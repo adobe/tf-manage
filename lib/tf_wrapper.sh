@@ -154,6 +154,32 @@ __run_action_state() {
     run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
 }
 
+__run_action_taint() {
+    debug "Entered ${FUNCNAME}"
+
+    # build wrapper command
+    local _cmd="terraform ${_TF_ACTION} ${_TF_ACTION_FLAGS}"
+    local _message="Executing $(__add_emphasis_green "terraform taint")"
+    local _flags=(${_DEFAULT_CMD_FLAGS[@]})
+    _flags[0]='strict'
+
+    # execute
+    run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
+}
+
+__run_action_untaint() {
+    debug "Entered ${FUNCNAME}"
+
+    # build wrapper command
+    local _cmd="terraform ${_TF_ACTION} ${_TF_ACTION_FLAGS}"
+    local _message="Executing $(__add_emphasis_green "terraform untaint")"
+    local _flags=(${_DEFAULT_CMD_FLAGS[@]})
+    _flags[0]='strict'
+
+    # execute
+    run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
+}
+
 __run_action_providers() {
     debug "Entered ${FUNCNAME}"
 
