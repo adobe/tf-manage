@@ -1,6 +1,9 @@
 # tf-manage
 
 ## Changelog
+### 5.6.0
+- [added] support for `import` terraform command
+-
 ### 5.5.0
 - [added] support for `taint`, `untaint` terraform commands
 

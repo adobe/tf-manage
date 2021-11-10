@@ -180,6 +180,31 @@ __run_action_untaint() {
     run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
 }
 
+__run_action_import() {
+    # vars
+    local var_file_path="${TF_VAR_FILE_PATH}"
+    local extra_tf_args=""
+
+    # append extra arguments in case we're running in "unattended" mode
+    [ "${TF_EXEC_MODE}" = 'unattended' ] && local extra_tf_args=" -input=false -auto-approve"
+
+    # build wrapper command
+    local _cmd="terraform import -var-file='${var_file_path}'${extra_tf_args} ${_TF_ACTION_FLAGS}"
+    local _message="Executing $(__add_emphasis_red "terraform import")"
+    local _extra_notice="This $(__add_emphasis_red 'will') affect infrastructure resources."
+    local _flags=(${_DEFAULT_CMD_FLAGS[@]})
+    _flags[0]='strict'
+    _flags[1]='print_cmd'
+    _flags[4]="no_print_message"
+
+    # notify user
+    info "${_message}"
+    info "${_extra_notice}"
+
+    # execute
+    run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
+}
+
 __run_action_providers() {
     debug "Entered ${FUNCNAME}"
 
