@@ -1,0 +1,16 @@
+[bash-framework]
+Copyright 2017 - present Adobe Systems Incorporated
+
+This software is licensed under the MIT License (see
+LICENSE file).
+
+This software uses the following third party libraries that may have
+licenses differing from that of the software itself. You can find the
+libraries and their respective licenses below.
+
+Third Party Software Notices:
+=============================
+This product includes the following software under the same MIT license:
+
+- "bash-framework" from Adobe Systems Incorporated
+    Copyright (c) 2017 - present Adobe Systems Incorporated. All rights reserved.

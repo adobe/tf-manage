@@ -1,6 +1,10 @@
 # tf-manage
 
 ## Changelog
+### 5.6.1
+- [added] added opensource license
+- [changed] updated bash-framework URL
+
 ### 5.6.0
 - [added] support for `import` terraform command
 -
