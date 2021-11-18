@@ -1,6 +1,9 @@
 # tf-manage
 
 ## Changelog
+### 5.6.2
+- [added] added other opensource documents: code of conduct, contributing and PR template
+
 ### 5.6.1
 - [added] added opensource license
 - [changed] updated bash-framework URL
