@@ -1,6 +1,12 @@
 # tf-manage
 
 ## Changelog
+### 5.7.0
+- [added] first open-sourced version
+- [vendor] pin bash-framework 0.8.0 (first github version)
+- [changed] the default Terraform version to install is now 1.0.11
+- [removed] internal CI template, docs, Dockerfile (to be replaced with public ones)
+
 ### 5.6.2
 - [added] added other opensource documents: code of conduct, contributing and PR template
 
@@ -10,7 +16,7 @@
 
 ### 5.6.0
 - [added] support for `import` terraform command
--
+
 ### 5.5.0
 - [added] support for `taint`, `untaint` terraform commands
 

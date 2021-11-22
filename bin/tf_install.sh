@@ -48,7 +48,7 @@ function usage {
 ## -- Setup
 # gather input vars
 # set TF version
-version=${1:-1.0.1}
+version=${1:-1.0.11}
 
 # generic folder logic
 install_dir='/opt/terraform'
