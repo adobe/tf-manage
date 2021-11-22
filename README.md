@@ -78,6 +78,26 @@ EOF
 ## Features
 ### Organise
 - use an intuitive folder structure that blends flexibility and scalability for the needs of most team sizes
+```bash
+# sample folder structure
+$ tree -a -I .git
+.
+├── .tfm.conf
+└── terraform
+    ├── environments
+    │   └── product1
+    │       ├── env1
+    │       │   └── module1
+    │       │       ├── component1.tfvars
+    │       │       └── component2.tfvars
+    │       └── env2
+    │           └── module1
+    │               ├── component1.tfvars
+    │               └── component2.tfvars
+    └── modules
+        └── module1
+            └── main.tf
+```
 - lower risk of human error - the wrapper generates these for you
   - var-file paths (built into terraform commands that accept them)
   - unique human-friendly terraform workspace names
