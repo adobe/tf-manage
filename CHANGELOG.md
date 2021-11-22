@@ -1,6 +1,9 @@
 # tf-manage
 
 ## Changelog
+### 5.7.1
+- [vendor/fix] fixed typo in bash-framework submodule reference
+
 ### 5.7.0
 - [added] first open-sourced version
 - [vendor] pin bash-framework 0.8.0 (first github version)
