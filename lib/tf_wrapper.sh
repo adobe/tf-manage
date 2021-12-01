@@ -168,6 +168,19 @@ __run_action_state() {
     run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
 }
 
+__run_action_workspace() {
+    debug "Entered ${FUNCNAME}"
+
+    # build wrapper command
+    local _cmd="terraform ${_TF_ACTION} ${_TF_ACTION_FLAGS}"
+    local _message="Executing $(__add_emphasis_green "terraform workspace")"
+    local _flags=(${_DEFAULT_CMD_FLAGS[@]})
+    _flags[0]='strict'
+
+    # execute
+    run_cmd "${_cmd}" "${_message}" "${_flags[@]}" "${_GENERIC_ERR_MESSAGE}"
+}
+
 __run_action_taint() {
     debug "Entered ${FUNCNAME}"
 
@@ -306,9 +319,11 @@ __tf_controller() {
 
     ### Check terraform workspace exists and is active
     ###############################################################################
-    if [ "${_TF_ACTION}" != "init" ]; then  # don't need a workspace for running "init"
-    if [ "${_TF_ACTION}" != "fmt" ]; then   # don't need a workspace for running "fmt"
+    if [ "${_TF_ACTION}" != "workspace" ]; then  # don't validate workspace when running "workspace"
+    if [ "${_TF_ACTION}" != "init" ]; then  # don't validate workspace when running "init"
+    if [ "${_TF_ACTION}" != "fmt" ]; then   # don't validate workspace when running "fmt"
         __validate_tf_workspace
+    fi
     fi
     fi
 

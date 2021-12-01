@@ -1,6 +1,9 @@
 # tf-manage
 
 ## Changelog
+### 5.8.0
+- [added] support for `workspace` terraform commands
+
 ### 5.7.1
 - [vendor/fix] fixed typo in bash-framework submodule reference
 
